@@ -29,7 +29,7 @@ function App() {
     },
     { 
       title: 'Premium Hospitality', 
-      desc: 'Curated wine and craft beer selection. Because great art deserves great company.'
+      desc: 'All Beverages & Supplies Included. Just bring your imagination and we\'ll handle the rest.'
     },
     { 
       title: 'Accessible Excellence', 
@@ -123,7 +123,7 @@ function App() {
           <img 
             src={PaintingInsideTheStudio} 
             alt="Studio" 
-            className="w-100 h-100 object-cover"
+            className="w-100 h-100 object-cover db"
             style={{ 
               minHeight: '40vh',
               transform: `scale(${1 + scrollY * 0.0002})`
@@ -212,7 +212,7 @@ function App() {
           <img 
             src={HandPainting} 
             alt="Hand Painting" 
-            className="w-100 h-100 object-cover"
+            className="w-100 h-100 object-cover db"
           />
         </div>
         <div className="w-100 w-50-l flex items-center justify-center pa4 pa5-l bg-white order-0 order-1-l">
@@ -351,11 +351,12 @@ function App() {
             </a>
           </div>
         </div>
-        <div className="w-100 w-50-l order-1" style={{ minHeight: '40vh' }}>
+        <div className="w-100 w-50-l order-1" style={{ minHeight: '40vh', display: 'flex' }}>
           <img 
             src={Outside} 
             alt="Studio Exterior" 
-            className="w-100 h-100 object-cover"
+            className="w-100 object-cover db"
+            style={{ height: '100%', minHeight: '40vh' }}
           />
         </div>
       </section>
@@ -366,7 +367,7 @@ function App() {
           <img 
             src={PaintImage} 
             alt="Painting Creation" 
-            className="w-100 h-100 object-cover"
+            className="w-100 h-100 object-cover db"
           />
         </div>
         <div className="w-100 w-50-l flex items-center justify-center pa4 pa5-l bg-near-white order-0 order-1-l">
@@ -439,11 +440,12 @@ function App() {
             </a>
           </div>
         </div>
-        <div className="w-100 w-50-l order-1" style={{ minHeight: '40vh' }}>
+        <div className="w-100 w-50-l order-1" style={{ minHeight: '40vh', display: 'flex' }}>
           <img 
             src={Inside} 
             alt="Studio Interior" 
-            className="w-100 h-100 object-cover"
+            className="w-100 object-cover db"
+            style={{ height: '100%', minHeight: '40vh' }}
           />
         </div>
       </section>
@@ -514,7 +516,7 @@ function App() {
                 <a href="#contact" className="db f7 f6-l black-60 no-underline hover-black">Contact</a>
               </div>
               <div>
-                <h4 className="f6 f5-l fw6 mb2 black">Connect</h4>
+                <h4 className="f6 f5-l fw6 mb2 black">Navigate</h4>
                 <a href="#" className="db f7 f6-l black-60 no-underline hover-black mb2">Facebook</a>
                 <a href="#" className="db f7 f6-l black-60 no-underline hover-black mb2">Instagram</a>
               </div>
@@ -530,6 +532,10 @@ function App() {
         * {
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
+        }
+
+        img {
+          display: block;
         }
         
         html {
