@@ -447,17 +447,8 @@ function App() {
             <h3 className="f3 f2-l fw6 mb4 tc black" style={{ letterSpacing: '-0.02em' }}>
               Weekly Schedule
             </h3>
-            <div className="grid" style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))',
-              gap: '1rem'
-            }}>
-              <div className="bg-near-white pa4 br3">
-                <div className="fw6 black mb2 f5">Walk-in Wednesday</div>
-                <div className="black-60">1:00 PM – 6:00 PM</div>
-                <div className="f7 black-50 mt2">No reservation needed</div>
-              </div>
-              <div className="bg-near-white pa4 br3">
+            <div className="flex justify-center">
+              <div className="bg-near-white pa4 br3" style={{ maxWidth: '400px', width: '100%' }}>
                 <div className="fw6 black mb2 f5">Ladies Night</div>
                 <div className="black-60">Every Thursday, 6:00 – 8:00 PM</div>
                 <a 
@@ -468,11 +459,6 @@ function App() {
                 >
                   Register here →
                 </a>
-              </div>
-              <div className="bg-near-white pa4 br3">
-                <div className="fw6 black mb2 f5">Date Night</div>
-                <div className="black-60">Every Friday, 6:00 – 8:00 PM</div>
-                <div className="f7 black-50 mt2">Perfect for couples</div>
               </div>
             </div>
           </div>
@@ -636,7 +622,16 @@ function App() {
               <div className="black-60 mb3">Pennington Gap, VA 24277</div>
               
               <div className="fw6 black mb2">Contact</div>
-              <div className="black-60">Visit us or check our class schedule online</div>
+              <div className="black-60 mb1">
+                <a href="tel:+12766908848" className="black-60 no-underline hover-black">
+                  +1 276-690-8848
+                </a>
+              </div>
+              <div className="black-60">
+                <a href="mailto:stac68camaro@gmail.com" className="black-60 no-underline hover-black">
+                  stac68camaro@gmail.com
+                </a>
+              </div>
             </div>
             <a 
               href="#classes" 
@@ -731,7 +726,17 @@ function App() {
             <div className="mb4 mb0-l">
               <h3 className="f4 f3-l fw6 mb3 black">Painting Outside The Lines Studio</h3>
               <p className="f6 f5-l black-60 mb2">140 Main Street</p>
-              <p className="f6 f5-l black-60">Pennington Gap, VA 24277</p>
+              <p className="f6 f5-l black-60 mb2">Pennington Gap, VA 24277</p>
+              <p className="f6 f5-l black-60 mb1">
+                <a href="tel:+12766908848" className="black-60 no-underline hover-black">
+                  +1 276-690-8848
+                </a>
+              </p>
+              <p className="f6 f5-l black-60">
+                <a href="mailto:stac68camaro@gmail.com" className="black-60 no-underline hover-black">
+                  stac68camaro@gmail.com
+                </a>
+              </p>
             </div>
             <div className="flex gap3 gap4-l">
               <div>
@@ -741,13 +746,34 @@ function App() {
               </div>
               <div>
                 <h4 className="f6 f5-l fw6 mb2 black">Connect</h4>
-                <a href="#" className="db f7 f6-l black-60 no-underline hover-black mb2">Facebook</a>
-                <a href="#" className="db f7 f6-l black-60 no-underline hover-black mb2">Instagram</a>
+                <a 
+                  href="https://www.facebook.com/p/Painting-Outside-the-Lines-Studio-61557459762829/" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="db f7 f6-l black-60 no-underline hover-black mb2"
+                >
+                  Facebook
+                </a>
+                {/* <a href="#" className="db f7 f6-l black-60 no-underline hover-black mb2">Instagram</a> */}
+                {/* <a href="#" className="db f7 f6-l black-60 no-underline hover-black mb2">Snapchat</a> */}
               </div>
             </div>
           </div>
           <div className="pt4 bt b--black-10 tc f7 f6-l black-60">
-            © {new Date().getFullYear()} Painting Outside The Lines Studio. All rights reserved.
+            <div className="mb2">
+              © {new Date().getFullYear()} Painting Outside The Lines Studio. All rights reserved.
+            </div>
+            <div>
+              Built by{' '}
+              <a 
+                href="https://www.smithdigitals.com/" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="black-60 no-underline hover-black fw6"
+              >
+                Smith Digitals
+              </a>
+            </div>
           </div>
         </div>
       </footer>
