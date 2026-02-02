@@ -37,6 +37,53 @@ function App() {
     }
   ];
 
+  const upcomingClasses = [
+    {
+      title: 'Ladies Night',
+      description: 'An evening of art, laughter, and connection. Every Thursday.',
+      schedule: 'Every Thursday • 6:00 – 8:00 PM',
+      link: 'https://lp.constantcontactpages.com/ev/reg/99pkryk/lp/056834c4-864a-4c37-b303-959670d797ce',
+      featured: true,
+      gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'
+    },
+    {
+      title: 'Favorite Person - Valentine\'s Day',
+      description: 'Celebrate love with a special painting experience perfect for couples.',
+      schedule: 'Valentine\'s Special',
+      link: 'https://lp.constantcontactpages.com/ev/reg/mfcrz2k/lp/fafa9951-f7ce-4f15-bd9a-a2fe5afd212b',
+      featured: true,
+      gradient: 'linear-gradient(135deg, #ff6b9d 0%, #c06c84 100%)'
+    },
+    {
+      title: 'February Home Class',
+      description: 'For Homeschoolers: Explore creativity in a comfortable setting.',
+      schedule: 'February Special',
+      link: 'https://lp.constantcontactpages.com/ev/reg/55dks8r/lp/4964ae08-0095-4614-b872-47a8ec389458',
+      gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+    },
+    {
+      title: 'Mommy & Me',
+      description: 'A beautiful bonding experience for mothers and children. Perfect for Mother\'s Day.',
+      schedule: 'Mother\'s Day Special',
+      link: 'https://lp.constantcontactpages.com/ev/reg/uam9uzb/lp/f6aeb366-3dad-4d8a-9bf3-682d652cebc9',
+      gradient: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)'
+    },
+    {
+      title: 'Winter Cardinal',
+      description: 'Paint a stunning winter scene featuring the iconic red cardinal.',
+      schedule: 'Seasonal Workshop',
+      link: 'https://lp.constantcontactpages.com/ev/reg/5u8pqeu/lp/dc5e2665-fbc1-4c96-97c5-5b6c5666d21b',
+      gradient: 'linear-gradient(135deg, #d299c2 0%, #fef9d7 100%)'
+    },
+    {
+      title: 'Paint Kits',
+      description: 'Take the studio experience home. Everything you need to create your masterpiece.',
+      schedule: 'Available Now',
+      link: 'https://lp.constantcontactpages.com/ev/reg/4fg93fu/lp/b9b41c4c-8d1b-405d-9848-1903a4dd2518',
+      gradient: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)'
+    }
+  ];
+
   const parties = [
     'Date Night', 'Girls Night', 'Kids Painting', 'Birthday Celebrations', 
     'Holiday Events', 'Corporate Gatherings', 'Team Building', 'Praise & Paint',
@@ -251,6 +298,187 @@ function App() {
         </div>
       </section>
 
+      {/* Classes Section - NEW */}
+      <section id="classes" className="pv5 pv6-l ph3 ph4-l bg-white">
+        <div className="max-w-7 center">
+          <div className="tc mb5">
+            <h2 className="f2 f1-l fw6 mb3 black" style={{ letterSpacing: '-0.02em', lineHeight: '1.1' }}>
+              Upcoming Classes & Events
+            </h2>
+            <p className="f5 f4-l lh-copy black-60 measure center">
+              From beginner-friendly workshops to special celebrations, find the perfect class for your creative journey.
+            </p>
+          </div>
+
+          {/* Featured Classes */}
+          <div className="mb4">
+            <div className="grid" style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))',
+              gap: '1.5rem',
+              marginBottom: '2rem'
+            }}>
+              {upcomingClasses.filter(c => c.featured).map((classItem, i) => (
+                <a
+                  key={i}
+                  href={classItem.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="no-underline"
+                  style={{ textDecoration: 'none' }}
+                >
+                  <div 
+                    className="br4 pa4 pa5-l relative overflow-hidden transition-all white"
+                    style={{
+                      background: classItem.gradient,
+                      boxShadow: '0 10px 30px rgba(0,0,0,0.15)',
+                      transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                      minHeight: '280px',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = 'translateY(-12px) scale(1.02)';
+                      e.currentTarget.style.boxShadow = '0 25px 50px rgba(0,0,0,0.25)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                      e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.15)';
+                    }}
+                  >
+                    <div>
+                      <div className="f6 fw6 mb2 white-80 tracked ttu" style={{ letterSpacing: '0.1em' }}>
+                        Featured
+                      </div>
+                      <h3 className="f3 f2-l fw7 mb3 white" style={{ letterSpacing: '-0.01em' }}>
+                        {classItem.title}
+                      </h3>
+                      <p className="f5 lh-copy white-90 mb3">
+                        {classItem.description}
+                      </p>
+                    </div>
+                    <div>
+                      <div className="f6 white-80 mb3">
+                        {classItem.schedule}
+                      </div>
+                      <div 
+                        className="dib ph4 pv2 br-pill fw6 f6 transition-all"
+                        style={{
+                          background: 'rgba(255,255,255,0.2)',
+                          backdropFilter: 'blur(10px)',
+                          border: '2px solid rgba(255,255,255,0.3)',
+                          color: 'white'
+                        }}
+                      >
+                        Register Now →
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* Regular Classes Grid */}
+          <div className="grid" style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
+            gap: '1.5rem'
+          }}>
+            {upcomingClasses.filter(c => !c.featured).map((classItem, i) => (
+              <a
+                key={i}
+                href={classItem.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="no-underline"
+                style={{ textDecoration: 'none' }}
+              >
+                <div 
+                  className="bg-white br4 overflow-hidden transition-all"
+                  style={{
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+                    transition: 'all 0.3s ease',
+                    border: '1px solid rgba(0,0,0,0.06)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-8px)';
+                    e.currentTarget.style.boxShadow = '0 20px 40px rgba(0,0,0,0.15)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.08)';
+                  }}
+                >
+                  <div 
+                    className="pa1"
+                    style={{
+                      background: classItem.gradient,
+                      height: '8px'
+                    }}
+                  ></div>
+                  <div className="pa4">
+                    <h3 className="f4 fw6 mb2 black" style={{ letterSpacing: '-0.01em' }}>
+                      {classItem.title}
+                    </h3>
+                    <p className="f6 lh-copy black-60 mb3">
+                      {classItem.description}
+                    </p>
+                    <div className="f7 black-50 mb3">
+                      {classItem.schedule}
+                    </div>
+                    <div 
+                      className="dib ph3 pv2 br-pill fw6 f7 black transition-all"
+                      style={{
+                        border: '2px solid black'
+                      }}
+                    >
+                      View Details →
+                    </div>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+
+          {/* Weekly Schedule */}
+          <div className="mt5 pt5 bt b--black-10">
+            <h3 className="f3 f2-l fw6 mb4 tc black" style={{ letterSpacing: '-0.02em' }}>
+              Weekly Schedule
+            </h3>
+            <div className="grid" style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))',
+              gap: '1rem'
+            }}>
+              <div className="bg-near-white pa4 br3">
+                <div className="fw6 black mb2 f5">Walk-in Wednesday</div>
+                <div className="black-60">1:00 PM – 6:00 PM</div>
+                <div className="f7 black-50 mt2">No reservation needed</div>
+              </div>
+              <div className="bg-near-white pa4 br3">
+                <div className="fw6 black mb2 f5">Ladies Night</div>
+                <div className="black-60">Every Thursday, 6:00 – 8:00 PM</div>
+                <a 
+                  href="https://lp.constantcontactpages.com/ev/reg/99pkryk/lp/056834c4-864a-4c37-b303-959670d797ce"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="f7 black no-underline mt2 dib hover-underline"
+                >
+                  Register here →
+                </a>
+              </div>
+              <div className="bg-near-white pa4 br3">
+                <div className="fw6 black mb2 f5">Date Night</div>
+                <div className="black-60">Every Friday, 6:00 – 8:00 PM</div>
+                <div className="f7 black-50 mt2">Perfect for couples</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Events Showcase */}
       <section className="pv5 pv6-l ph3 ph4-l bg-black white">
         <div className="max-w-6 center">
@@ -286,7 +514,7 @@ function App() {
 
           <div className="tc">
             <a 
-              href="#register" 
+              href="#contact" 
               className="dib bg-white black ph4 pv3 ph5-l br-pill no-underline fw6 hover-bg-white-90 transition-all tc"
               style={{ 
                 transition: 'all 0.3s ease',
@@ -309,26 +537,12 @@ function App() {
             <h2 className="f3 f2-m f1-l fw6 mb3 mb4-l black" style={{ letterSpacing: '-0.02em', lineHeight: '1.1' }}>
               Your schedule.<br/>Your masterpiece.
             </h2>
-            <div className="f6 f5-l lh-copy black-60 mb4">
-              <div className="mb3 pb3 bb b--black-10">
-                <div className="fw6 black mb2">Walk-in Wednesday</div>
-                <div>1:00 PM – 6:00 PM</div>
-              </div>
-              <div className="mb3 pb3 bb b--black-10">
-                <div className="fw6 black mb2">Ladies Night</div>
-                <div>Every Thursday, 6:00 – 8:00 PM</div>
-              </div>
-              <div className="mb3 pb3 bb b--black-10">
-                <div className="fw6 black mb2">Date Night</div>
-                <div>Every Friday, 6:00 – 8:00 PM</div>
-              </div>
-              <div className="mb3">
-                <div className="fw6 black mb2">Special: Brunch & Painting</div>
-                <div>September 27th</div>
-              </div>
-            </div>
+            <p className="f5 f4-l lh-copy black-60 mb4">
+              Whether you prefer structured classes or drop-in sessions, we have options that fit your lifestyle. 
+              Browse our full schedule and find the perfect time to create.
+            </p>
             <a 
-              href="#register" 
+              href="#classes" 
               className="dib black ph4 pv3 br-pill no-underline fw6 transition-all tc"
               style={{ 
                 border: '2px solid black',
@@ -347,7 +561,7 @@ function App() {
                 e.currentTarget.style.color = 'black';
               }}
             >
-              Reserve Your Spot
+              View All Classes
             </a>
           </div>
         </div>
@@ -406,7 +620,7 @@ function App() {
       </section>
 
       {/* Image Feature - Inside Studio */}
-      <section className="flex flex-column flex-row-l min-vh-50 min-vh-100-l">
+      <section id="contact" className="flex flex-column flex-row-l min-vh-50 min-vh-100-l">
         <div className="w-100 w-50-l flex items-center justify-center pa4 pa5-l bg-white order-0">
           <div className="w-100" style={{ maxWidth: '32rem' }}>
             <h2 className="f3 f2-m f1-l fw6 mb3 mb4-l black" style={{ letterSpacing: '-0.02em', lineHeight: '1.1' }}>
@@ -416,8 +630,16 @@ function App() {
               Step into our thoughtfully designed studio where every detail encourages creativity. 
               Natural light, comfortable seating, and an atmosphere that makes artistry feel effortless.
             </p>
+            <div className="mb4">
+              <div className="fw6 black mb2">Location</div>
+              <div className="black-60 mb1">140 Main Street</div>
+              <div className="black-60 mb3">Pennington Gap, VA 24277</div>
+              
+              <div className="fw6 black mb2">Contact</div>
+              <div className="black-60">Visit us or check our class schedule online</div>
+            </div>
             <a 
-              href="#contact" 
+              href="#classes" 
               className="dib black ph4 pv3 br-pill no-underline fw6 transition-all tc"
               style={{ 
                 border: '2px solid black',
@@ -436,7 +658,7 @@ function App() {
                 e.currentTarget.style.color = 'black';
               }}
             >
-              Visit Us
+              View Classes
             </a>
           </div>
         </div>
@@ -463,7 +685,7 @@ function App() {
           </p>
           <div className="flex flex-column flex-row-ns justify-center items-center" style={{ gap: '1rem' }}>
             <a 
-              href="#payment" 
+              href="#classes" 
               className="dib w-100 w-auto-ns bg-white black ph4 pv3 ph5-l br-pill no-underline fw6 hover-bg-white-90 transition-all tc"
               style={{ 
                 minHeight: '48px',
@@ -472,10 +694,12 @@ function App() {
                 justifyContent: 'center'
               }}
             >
-              Payment Options
+              Browse Classes
             </a>
             <a 
-              href="#register" 
+              href="https://lp.constantcontactpages.com/ev/reg/4fg93fu/lp/b9b41c4c-8d1b-405d-9848-1903a4dd2518" 
+              target="_blank"
+              rel="noopener noreferrer"
               className="dib w-100 w-auto-ns white ph4 pv3 ph5-l br-pill no-underline fw6 transition-all tc"
               style={{ 
                 border: '2px solid white',
@@ -494,7 +718,7 @@ function App() {
                 e.currentTarget.style.color = 'white';
               }}
             >
-              Class Registration
+              Order Paint Kits
             </a>
           </div>
         </div>
@@ -516,7 +740,7 @@ function App() {
                 <a href="#contact" className="db f7 f6-l black-60 no-underline hover-black">Contact</a>
               </div>
               <div>
-                <h4 className="f6 f5-l fw6 mb2 black">Navigate</h4>
+                <h4 className="f6 f5-l fw6 mb2 black">Connect</h4>
                 <a href="#" className="db f7 f6-l black-60 no-underline hover-black mb2">Facebook</a>
                 <a href="#" className="db f7 f6-l black-60 no-underline hover-black mb2">Instagram</a>
               </div>
@@ -632,6 +856,10 @@ function App() {
         
         .min-vh-50 {
           min-height: 50vh;
+        }
+
+        .hover-underline:hover {
+          text-decoration: underline;
         }
         
         /* Mobile touch improvements */
