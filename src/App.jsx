@@ -713,7 +713,7 @@ function App() {
                 e.currentTarget.style.color = 'white';
               }}
             >
-              Order Paint Kits
+              Order Paint a Kit
             </a>
           </div>
         </div>
