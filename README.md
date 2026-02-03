@@ -1,2 +1,2 @@
 # React + Vite
-https://dylanjdev.github.io/PaintingInsideTheLinesStudio/
+https://paintingoutsidethelinesstudios.com/
