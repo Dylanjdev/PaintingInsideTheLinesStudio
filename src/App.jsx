@@ -184,7 +184,7 @@ function App() {
             width="800"
             height="600"
             loading="eager"
-            fetchpriority="high"
+            fetchPriority="high"
             style={{ 
               minHeight: '40vh',
               transform: `scale(${1 + scrollY * 0.0002})`
