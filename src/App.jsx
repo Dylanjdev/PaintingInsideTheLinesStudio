@@ -80,6 +80,13 @@ function App() {
       schedule: 'Available Now',
       link: 'https://lp.constantcontactpages.com/ev/reg/4fg93fu/lp/b9b41c4c-8d1b-405d-9848-1903a4dd2518',
       gradient: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)'
+    },
+    {
+      title: 'Spring Door Hangers',
+      description: 'Brighten your home with beautiful hand-painted spring door hangers. Perfect for seasonal decor and gifts.',
+      schedule: 'Spring Special',
+      link: 'https://lp.constantcontactpages.com/ev/reg/y8qrndb/lp/a6aa89be-ee07-40a6-80b2-4fa79a29b0b0',
+      gradient: 'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)'
     }
   ];
 
@@ -174,6 +181,8 @@ function App() {
         </nav>
       </nav>
 
+      {/* ─── Main Content ─── */}
+      <main>
       {/* ─── Hero Section ─── */}
       <header className="flex flex-column flex-row-l min-vh-100" style={{ paddingTop: '60px' }}>
         <div className="w-100 w-60-l relative overflow-hidden" style={{ minHeight: '40vh' }}>
@@ -209,7 +218,7 @@ function App() {
             <address className="f6 f5-l fw4 mb1 black-60" style={{ fontStyle: 'normal' }}>
               140 Main Street, Pennington Gap, VA 24277
             </address>
-            <p className="f7 black-50 mb4 mb5-l">
+            <p className="f7 black-60 mb4 mb5-l">
               Guided painting classes &amp; paint parties in Lee County, Virginia
             </p>
             <a 
@@ -296,7 +305,7 @@ function App() {
             <p className="f5 f4-l lh-copy black-60 mb4">
               Watch your vision take shape with every brushstroke. Our expert instructors guide you through 
               techniques that transform a blank canvas into a piece you'll be proud to display. It's not about 
-              being perfect—it's about discovering what you're capable of creating.
+              being perfect, it's about discovering what you're capable of creating.
             </p>
             <a 
               href="#classes" 
@@ -461,7 +470,7 @@ function App() {
                       <p className="f6 lh-copy black-60 mb3">
                         {classItem.description}
                       </p>
-                      <p className="f7 black-50 mb3">
+                      <p className="f7 black-60 mb3">
                         {classItem.schedule}
                       </p>
                       <div 
@@ -1018,6 +1027,7 @@ function App() {
           overflow: hidden;
         }
       `}</style>
+      </main>
     </div>
   );
 }
