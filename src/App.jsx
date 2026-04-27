@@ -157,6 +157,149 @@ function App() {
     }
   ];
 
+  const studioAddress = {
+    '@type': 'PostalAddress',
+    streetAddress: '140 Main Street',
+    addressLocality: 'Pennington Gap',
+    addressRegion: 'VA',
+    postalCode: '24277',
+    addressCountry: 'US'
+  };
+
+  const parseDateCandidate = (value) => {
+    if (!value) return null;
+    const normalized = value
+      .replace(/\s+/g, ' ')
+      .replace(/(\d)(am|pm)\b/gi, '$1 $2')
+      .replace(/\b(am|pm)\b/gi, (m) => m.toUpperCase())
+      .trim();
+    const parsed = new Date(normalized);
+    return Number.isNaN(parsed.getTime()) ? null : parsed;
+  };
+
+  const toIsoString = (date) => {
+    if (!date) return undefined;
+    const pad = (n) => String(n).padStart(2, '0');
+    const y = date.getFullYear();
+    const m = pad(date.getMonth() + 1);
+    const d = pad(date.getDate());
+    const h = pad(date.getHours());
+    const min = pad(date.getMinutes());
+    return `${y}-${m}-${d}T${h}:${min}:00-04:00`;
+  };
+
+  const parseScheduleDates = (schedule) => {
+    const parts = schedule.split(' - ').map((part) => part.trim());
+    if (!parts.length) return {};
+
+    const start = parseDateCandidate(parts[0]);
+    if (!start) return {};
+
+    let end = null;
+    if (parts[1]) {
+      const directEnd = parseDateCandidate(parts[1]);
+      if (directEnd) {
+        end = directEnd;
+      } else {
+        const datePrefix = parts[0].replace(/\s+\d{1,2}:\d{2}\s*[AaPp][Mm]\s*$/, '').trim();
+        end = parseDateCandidate(`${datePrefix} ${parts[1]}`);
+      }
+    }
+
+    return {
+      startDate: toIsoString(start),
+      endDate: toIsoString(end)
+    };
+  };
+
+  const classesItemListSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Upcoming Classes and Events',
+    itemListElement: upcomingClasses.map((classItem, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      url: classItem.link,
+      item: {
+        '@type': 'Course',
+        name: classItem.title,
+        description: classItem.description,
+        provider: {
+          '@type': 'LocalBusiness',
+          name: 'Painting Outside The Lines Studio'
+        }
+      }
+    }))
+  };
+
+  const classEventsSchema = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'EventSeries',
+        name: 'Ladies Night',
+        description: 'An evening of art, laughter, and connection. Every Thursday at our Pennington Gap studio.',
+        eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+        eventStatus: 'https://schema.org/EventScheduled',
+        location: {
+          '@type': 'Place',
+          name: 'Painting Outside The Lines Studio',
+          address: studioAddress
+        },
+        eventSchedule: {
+          '@type': 'Schedule',
+          byDay: ['https://schema.org/Thursday'],
+          startTime: '18:00',
+          endTime: '20:00',
+          scheduleTimezone: 'America/New_York'
+        },
+        offers: {
+          '@type': 'Offer',
+          url: 'https://lp.constantcontactpages.com/ev/reg/99pkryk/lp/056834c4-864a-4c37-b303-959670d797ce',
+          availability: 'https://schema.org/InStock'
+        },
+        organizer: {
+          '@type': 'Organization',
+          name: 'Painting Outside The Lines Studio',
+          url: 'https://paintingoutsidethelinesstudios.com/'
+        }
+      },
+      ...upcomingClasses
+        .map((classItem) => {
+          const parsed = parseScheduleDates(classItem.schedule);
+          if (!parsed.startDate || classItem.title === 'Ladies Night') {
+            return null;
+          }
+
+          return {
+            '@type': 'Event',
+            name: classItem.title,
+            description: classItem.description,
+            startDate: parsed.startDate,
+            ...(parsed.endDate ? { endDate: parsed.endDate } : {}),
+            eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+            eventStatus: 'https://schema.org/EventScheduled',
+            location: {
+              '@type': 'Place',
+              name: 'Painting Outside The Lines Studio',
+              address: studioAddress
+            },
+            offers: {
+              '@type': 'Offer',
+              url: classItem.link,
+              availability: 'https://schema.org/InStock'
+            },
+            organizer: {
+              '@type': 'Organization',
+              name: 'Painting Outside The Lines Studio',
+              url: 'https://paintingoutsidethelinesstudios.com/'
+            }
+          };
+        })
+        .filter(Boolean)
+    ]
+  };
+
   const parties = [
     'Date Night', 'Girls Night', 'Kids Painting', 'Birthday Celebrations', 
     'Holiday Events', 'Corporate Gatherings', 'Team Building', 'Praise & Paint',
@@ -165,6 +308,14 @@ function App() {
 
   return (
     <div className="bg-white" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif' }}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(classesItemListSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(classEventsSchema) }}
+      />
       
       {/* ─── Navigation (role="navigation" is implicit on <nav>) ─── */}
       <nav className="fixed top-0 left-0 right-0 z-999 transition-all bg-white-90 backdrop-blur" aria-label="Main navigation" style={{ 
