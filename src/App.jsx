@@ -38,6 +38,14 @@ function App() {
 
   const upcomingClasses = [
     {
+      title: 'Painting, Minigolf, laser tag',
+      description: 'Day of fun lets help brighten up the space at Appalachian Asenso Mini Golf and Laser Tag in Pennington Gap, VA.',
+      schedule: 'Jun 16, 2026 06:00pm - 08:00pm',
+      link: 'https://lp.constantcontactpages.com/ev/reg/u376ts6/lp/d2a653c2-8294-411b-ab57-7f5097036675?fbclid=IwY2xjawRV2npleHRuA2FlbQIxMABicmlkETFhT2NpQ2hoTTdxM2pwOTJFc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHqKD1HKOTvJ326jVBmn5WS2ZV0ZZoAB_Xn56zXCl-sQzDuXR-kkmY1kPXW7y_aem_EvbMYU2V4ea8tQmdAZ_MzA',
+      featured: true,
+      gradient: 'linear-gradient(135deg, #f6d365 0%, #fda085 100%)'
+    },
+    {
       title: 'Ladies Night',
       description: 'An evening of art, laughter, and connection. Every Thursday at our Pennington Gap studio.',
       schedule: 'Every Thursday • 6:00 – 8:00 PM',
@@ -46,26 +54,50 @@ function App() {
       gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'
     },
     {
-      title: 'Favorite Person – Valentine\'s Day',
-      description: 'Celebrate love with a special painting experience perfect for couples in Virginia.',
-      schedule: 'Valentine\'s Special',
-      link: 'https://lp.constantcontactpages.com/ev/reg/mfcrz2k/lp/fafa9951-f7ce-4f15-bd9a-a2fe5afd212b',
-      featured: true,
-      gradient: 'linear-gradient(135deg, #ff6b9d 0%, #c06c84 100%)'
-    },
-    {
-      title: 'February Home Class',
-      description: 'For Homeschoolers: Explore creativity in a comfortable studio setting this February.',
-      schedule: 'February Special',
-      link: 'https://lp.constantcontactpages.com/ev/reg/55dks8r/lp/4964ae08-0095-4614-b872-47a8ec389458',
-      gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-    },
-    {
-      title: 'Mommy & Me Painting',
+      title: 'Mommy & Me',
       description: 'A beautiful bonding experience for mothers and children. Paint together and create lasting memories.',
       schedule: 'Mother\'s Day Special',
       link: 'https://lp.constantcontactpages.com/ev/reg/uam9uzb/lp/f6aeb366-3dad-4d8a-9bf3-682d652cebc9',
+      featured: true,
       gradient: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)'
+    },
+    {
+      title: 'Donna Boots fundraiser',
+      description: 'Fundraiser to help raise funds for a mother, grandmother, and friend that lost everything in a house fire.',
+      schedule: 'Fundraiser',
+      link: 'https://lp.constantcontactpages.com/ev/reg/4dagw9a/lp/570271d5-e430-457a-bf49-cbe1cfc287c5',
+      featured: true,
+      gradient: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)'
+    },
+    {
+      title: 'Studio Makeover',
+      description: 'Refresh and redesign your creative space with a guided studio makeover session.',
+      schedule: 'Special Event',
+      link: 'https://lp.constantcontactpages.com/ev/reg/b8d92f9/lp/27a27b2d-7962-462e-bb96-6c40da4b7db4?fbclid=IwY2xjawQ5ax1leHRuA2FlbQIxMABicmlkETFXS0pOcER6QXZQb1F3eUdtc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHllHxugm8OEXxlLDwCNPEtpmOjGZb2u2wobm7U1ngchAet4yxsaGTVZzr9SV_aem_N0FU5c0WMoqqCbSIn5dcGA',
+      featured: true,
+      gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)'
+    },
+    {
+      title: 'Crushed Glass',
+      description: 'Discover the beauty of crushed glass art. Create stunning pieces with vibrant colors and unique textures in our guided workshop.',
+      schedule: 'Jun 27, 2026 04:00pm - Jun 27, 2026 07:00pm',
+      link: 'https://lp.constantcontactpages.com/ev/reg/8jrt5c3/lp/f76f8ac2-0abb-41a0-85cc-18305e3eaa17?fbclid=IwY2xjawRLWolleHRuA2FlbQIxMABicmlkETFONlI1SXpSeWFTTng0dFVic3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHi-Xo1OHmStlBXdAX92kIyv-jBJyOp_v4P4EtL3RxpODsx3-cFy_Q1XKHROc_aem_cIz7qvS01D8R8mSPWZoXHw',
+      featured: true,
+      gradient: 'linear-gradient(135deg, #7f7fd5 0%, #86a8e7 50%, #91eae4 100%)'
+    },
+    {
+      title: 'Slime fun',
+      description: 'Get hands-on with a playful slime workshop that is perfect for kids, families, and parties.',
+      schedule: 'make slime party',
+      link: 'https://lp.constantcontactpages.com/ev/reg/7ftq8ew/lp/a4a6785c-ac87-4f52-a1f5-0c33e92357fe',
+      gradient: 'linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%)'
+    },
+    {
+      title: 'Mother\'s Day Class',
+      description: 'Celebrate Mother\'s Day with a special guided painting class designed for meaningful memories.',
+      schedule: 'Mother\'s Day Special',
+      link: 'https://lp.constantcontactpages.com/ev/reg/3eryzj6/lp/0afe94c9-d93a-4fe4-820b-def1cede5797',
+      gradient: 'linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%)'
     },
     {
       title: 'Winter Cardinal',
@@ -87,6 +119,41 @@ function App() {
       schedule: 'Spring Special',
       link: 'https://lp.constantcontactpages.com/ev/reg/y8qrndb/lp/a6aa89be-ee07-40a6-80b2-4fa79a29b0b0',
       gradient: 'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)'
+    },
+    {
+      title: 'Wooden Crosses',
+      description: 'Create hand-crafted wooden crosses with guided instruction in a welcoming studio environment.',
+      schedule: 'Apr 11, 2026 04:00pm - Apr 11, 2026 06:00pm',
+      link: 'https://lp.constantcontactpages.com/ev/reg/p9mrntf/lp/1a02c613-c046-455c-9dd6-f87f10833e3b?fbclid=IwY2xjawQ5a21leHRuA2FlbQIxMABicmlkETFXS0pOcER6QXZQb1F3eUdtc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHqkpS7iW27if_2ykbJrp118vNmXvYGqkSlj-1RTz41CchZdMKbHnxGxuAQAT_aem_yblUlCC1dxJZ68dkTKZmeA',
+      gradient: 'linear-gradient(135deg, #c79081 0%, #dfa579 100%)'
+    },
+    {
+      title: 'April Showers',
+      description: 'Celebrate spring with a fun April Showers painting session in the studio.',
+      schedule: 'April Special',
+      link: 'https://lp.constantcontactpages.com/ev/reg/eewrhy5/lp/c132aa90-e881-4153-ac34-999d37b89a05?fbclid=IwY2xjawQ5a6ZleHRuA2FlbQIxMABicmlkETFXS0pOcER6QXZQb1F3eUdtc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHtk-kSqMtcz_vglCGiEBVpYasq0s6TRywHKWY_YNOM5mXQL6UXl_haiPa8Mi_aem_ieoaOGMC-p99sIY0oBw8yQ',
+      gradient: 'linear-gradient(135deg, #89f7fe 0%, #7aa2ff 100%)'
+    },
+    {
+      title: 'Wooden Projects',
+      description: 'Create beautiful wooden projects in our studio. Guided instruction for all skill levels.',
+      schedule: 'Apr 25, 2026 04:00pm - Apr 25, 2026 06:00pm',
+      link: 'https://lp.constantcontactpages.com/ev/reg/985u49q/lp/a60a9f4f-fc34-4529-808f-af3271d12e4e?fbclid=IwY2xjawQyuWZleHRuA2FlbQIxMABicmlkETFUakprN3hkamhQcHdXV1N5c3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHscS71neZgp2i7yWMdZjtxCDcm9FTVH0PBUt8c3maIx2r2OVgzzVcVWVlPx7_aem_7wDHY_JZMHDOe4_Zl4NNIQ',
+      gradient: 'linear-gradient(135deg, #8b7355 0%, #c9a96e 100%)'
+    },
+    {
+      title: 'Canvas Tote Bags',
+      description: 'Paint and personalize beautiful canvas tote bags. A functional art project you can take home and use.',
+      schedule: 'Apr 18, 2026 04:00pm - Apr 18, 2026 06:00pm',
+      link: 'https://lp.constantcontactpages.com/ev/reg/wd8tq46/lp/5cdac369-5b95-46a8-b28b-4951b143cd49?fbclid=IwY2xjawQyud1leHRuA2FlbQIxMABicmlkETFUakprN3hkamhQcHdXV1N5c3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHvDYNK_kegV1jRLs5lo1wkqOvGulyWXmFPFTuDXPr4us01ekgGRqT_tX0Yfk_aem_sj2-Lt-4WBcW4IRAqaZXqw',
+      gradient: 'linear-gradient(135deg, #ff9a56 0%, #ff6b6b 100%)'
+    },
+    {
+      title: 'Wine Glass Painting Class',
+      description: 'Unleash your creativity with our Wine Glass Painting Class. A fun and relaxing way to create personalized glassware.',
+      schedule: 'Apr 10, 2026 01:00pm',
+      link: 'https://lp.constantcontactpages.com/ev/reg/nf7pdtp/lp/87bc2a48-e171-4f14-a586-c5d70d3c86ef?fbclid=IwY2xjawRDXhFleHRuA2FlbQIxMABicmlkETFEZllFRDI3Y3FlSWtuNkhic3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHgYrJPSso8pggWQEPBn1oIP19xI9yCbJRWgG4aMm04Qfr9LZnlQTCRrZrZ54_aem_OJ67qYDw3_SV-eoeSdhaRg',
+      gradient: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)'
     }
   ];
 

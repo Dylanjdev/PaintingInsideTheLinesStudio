@@ -1,0 +1,22 @@
+{
+  "name": "Painting Outside The Lines Studio",
+  "short_name": "POTL Studio",
+  "description": "Guided painting classes and private paint parties in Pennington Gap, Virginia.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#111111",
+  "icons": [
+    {
+      "src": "/PaintingInsideTheStudio.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/PaintingInsideTheStudio.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
