@@ -120,41 +120,6 @@ function App() {
       link: 'https://lp.constantcontactpages.com/ev/reg/y8qrndb/lp/a6aa89be-ee07-40a6-80b2-4fa79a29b0b0',
       gradient: 'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)'
     },
-    {
-      title: 'Wooden Crosses',
-      description: 'Create hand-crafted wooden crosses with guided instruction in a welcoming studio environment.',
-      schedule: 'Apr 11, 2026 04:00pm - Apr 11, 2026 06:00pm',
-      link: 'https://lp.constantcontactpages.com/ev/reg/p9mrntf/lp/1a02c613-c046-455c-9dd6-f87f10833e3b?fbclid=IwY2xjawQ5a21leHRuA2FlbQIxMABicmlkETFXS0pOcER6QXZQb1F3eUdtc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHqkpS7iW27if_2ykbJrp118vNmXvYGqkSlj-1RTz41CchZdMKbHnxGxuAQAT_aem_yblUlCC1dxJZ68dkTKZmeA',
-      gradient: 'linear-gradient(135deg, #c79081 0%, #dfa579 100%)'
-    },
-    {
-      title: 'April Showers',
-      description: 'Celebrate spring with a fun April Showers painting session in the studio.',
-      schedule: 'April Special',
-      link: 'https://lp.constantcontactpages.com/ev/reg/eewrhy5/lp/c132aa90-e881-4153-ac34-999d37b89a05?fbclid=IwY2xjawQ5a6ZleHRuA2FlbQIxMABicmlkETFXS0pOcER6QXZQb1F3eUdtc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHtk-kSqMtcz_vglCGiEBVpYasq0s6TRywHKWY_YNOM5mXQL6UXl_haiPa8Mi_aem_ieoaOGMC-p99sIY0oBw8yQ',
-      gradient: 'linear-gradient(135deg, #89f7fe 0%, #7aa2ff 100%)'
-    },
-    {
-      title: 'Wooden Projects',
-      description: 'Create beautiful wooden projects in our studio. Guided instruction for all skill levels.',
-      schedule: 'Apr 25, 2026 04:00pm - Apr 25, 2026 06:00pm',
-      link: 'https://lp.constantcontactpages.com/ev/reg/985u49q/lp/a60a9f4f-fc34-4529-808f-af3271d12e4e?fbclid=IwY2xjawQyuWZleHRuA2FlbQIxMABicmlkETFUakprN3hkamhQcHdXV1N5c3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHscS71neZgp2i7yWMdZjtxCDcm9FTVH0PBUt8c3maIx2r2OVgzzVcVWVlPx7_aem_7wDHY_JZMHDOe4_Zl4NNIQ',
-      gradient: 'linear-gradient(135deg, #8b7355 0%, #c9a96e 100%)'
-    },
-    {
-      title: 'Canvas Tote Bags',
-      description: 'Paint and personalize beautiful canvas tote bags. A functional art project you can take home and use.',
-      schedule: 'Apr 18, 2026 04:00pm - Apr 18, 2026 06:00pm',
-      link: 'https://lp.constantcontactpages.com/ev/reg/wd8tq46/lp/5cdac369-5b95-46a8-b28b-4951b143cd49?fbclid=IwY2xjawQyud1leHRuA2FlbQIxMABicmlkETFUakprN3hkamhQcHdXV1N5c3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHvDYNK_kegV1jRLs5lo1wkqOvGulyWXmFPFTuDXPr4us01ekgGRqT_tX0Yfk_aem_sj2-Lt-4WBcW4IRAqaZXqw',
-      gradient: 'linear-gradient(135deg, #ff9a56 0%, #ff6b6b 100%)'
-    },
-    {
-      title: 'Wine Glass Painting Class',
-      description: 'Unleash your creativity with our Wine Glass Painting Class. A fun and relaxing way to create personalized glassware.',
-      schedule: 'Apr 10, 2026 01:00pm',
-      link: 'https://lp.constantcontactpages.com/ev/reg/nf7pdtp/lp/87bc2a48-e171-4f14-a586-c5d70d3c86ef?fbclid=IwY2xjawRDXhFleHRuA2FlbQIxMABicmlkETFEZllFRDI3Y3FlSWtuNkhic3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHgYrJPSso8pggWQEPBn1oIP19xI9yCbJRWgG4aMm04Qfr9LZnlQTCRrZrZ54_aem_OJ67qYDw3_SV-eoeSdhaRg',
-      gradient: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)'
-    }
   ];
 
   const studioAddress = {
