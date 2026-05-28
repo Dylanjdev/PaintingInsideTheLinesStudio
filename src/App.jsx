@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Inside from './assets/Inside.webp';
 import Outside from './assets/Outside.webp';
 import PaintImage from './assets/PaintImage.webp';
-import PaintingInsideTheStudio from './assets/PaintingInsideTheStudio.webp';
 import HandPainting from './assets/HandPainting.webp';
 import LadiesNightBlueTruck from './assets/ladiesnightbluetruck.webp';
 import LadiesNightChicken from './assets/ladiesnightchicken.webp';
@@ -630,7 +629,7 @@ function App() {
       <header className="flex flex-column flex-row-l min-vh-100" style={{ paddingTop: '60px' }}>
         <div className="w-100 w-60-l relative overflow-hidden" style={{ minHeight: '40vh' }}>
           <img 
-            src={PaintingInsideTheStudio} 
+            src="/PaintingInsideTheStudio.webp" 
             alt="Inside Painting Outside The Lines Studio – a warm, inviting painting studio at 140 Main Street, Pennington Gap, Virginia" 
             className="w-100 h-100 object-cover db"
             width="800"
@@ -1259,8 +1258,8 @@ function App() {
               <div>
                 <h4 className="f6 f5-l fw6 mb2 black">Navigate</h4>
                 <nav aria-label="Footer navigation">
-                  <a href="#classes" className="db f7 f6-l black-60 no-underline hover-black mb2">Classes &amp; Events</a>
-                  <a href="#contact" className="db f7 f6-l black-60 no-underline hover-black">Location &amp; Contact</a>
+                  <a href="#classes" className="db f7 f6-l black-60 no-underline hover-black pv2 mb1" style={{ minHeight: '44px' }}>Classes &amp; Events</a>
+                  <a href="#contact" className="db f7 f6-l black-60 no-underline hover-black pv2" style={{ minHeight: '44px' }}>Location &amp; Contact</a>
                 </nav>
               </div>
               <div>
