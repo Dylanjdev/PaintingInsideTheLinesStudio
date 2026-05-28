@@ -21,6 +21,7 @@
 
     <!-- ─── Canonical ─── -->
     <link rel="canonical" href="https://paintingoutsidethelinesstudios.com/" />
+    <link rel="preload" as="image" href="/PaintingInsideTheStudio.webp" type="image/webp" fetchpriority="high" />
 
     <!-- ─── Geo Tags (Pennington Gap, VA) ─── -->
     <meta name="geo.placename"   content="Pennington Gap, Virginia" />
@@ -62,16 +63,27 @@
 
     <!-- Meta Pixel Code -->
     <script>
-    !function(f,b,e,v,n,t,s)
-    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '1005909275198356');
-    fbq('track', 'PageView');
+    function loadFacebookPixel() {
+      if (document.getElementById('facebook-pixel-script')) return;
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;t.id='facebook-pixel-script';
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', '1005909275198356');
+      fbq('track', 'PageView');
+    }
+
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(loadFacebookPixel, { timeout: 3000 });
+    } else {
+      window.addEventListener('load', function() {
+        window.setTimeout(loadFacebookPixel, 1500);
+      });
+    }
     </script>
     <!-- End Meta Pixel Code -->
 
@@ -220,7 +232,7 @@
     }
     </script>
 
-    <script type="module" crossorigin src="/assets/index-B_Mb0-9Z.js"></script>
+    <script type="module" crossorigin src="/assets/index-Cmg_ldhs.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/vendor-C6qNFpnO.js">
     <link rel="stylesheet" crossorigin href="/assets/index-BRC2iH5u.css">
   </head>
