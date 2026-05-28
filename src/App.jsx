@@ -4,10 +4,31 @@ import Outside from './assets/Outside.webp';
 import PaintImage from './assets/PaintImage.webp';
 import PaintingInsideTheStudio from './assets/PaintingInsideTheStudio.webp';
 import HandPainting from './assets/HandPainting.webp';
+import LadiesNightBlueTruck from './assets/ladiesnightbluetruck.webp';
+import LadiesNightChicken from './assets/ladiesnightchicken.webp';
+import LadiesNightBootsDirty from './assets/ladiesnightbootsdirty.webp';
+import LadiesNightHighlanderPurple from './assets/ladiesnighthighlanderpurple.webp';
+import LadiesNightHighlanderSunflower from './assets/ladiesnighthighlandersunflower.webp';
+import CupOfSunshine from './assets/cupofsunshine.webp';
+import Cactus from './assets/cactus.webp';
+import Barn from './assets/barn.webp';
+import Fence from './assets/fence.webp';
+import SpringBird from './assets/springbird.webp';
+import CrushedGlassChristmas from './assets/crushedglasschristmas.webp';
+import Sled from './assets/sled.webp';
+import Welcome from './assets/welcome.webp';
+import ElevenSeasons from './assets/11seasons.webp';
+import Rwb from './assets/rwb.webp';
+import Sand from './assets/sand.webp';
+import Slime from './assets/slime.webp';
 
 function App() {
   const [scrollY, setScrollY] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [ladiesNightModalOpen, setLadiesNightModalOpen] = useState(false);
+  const [classOptionsModal, setClassOptionsModal] = useState(null);
+  const [projectModal, setProjectModal] = useState(null);
+  const [projectModalClosing, setProjectModalClosing] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,6 +37,73 @@ function App() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (!ladiesNightModalOpen) return undefined;
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setLadiesNightModalOpen(false);
+      }
+    };
+
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [ladiesNightModalOpen]);
+
+  useEffect(() => {
+    if (!projectModal) return undefined;
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        closeProjectModal();
+      }
+    };
+
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [projectModal]);
+
+  useEffect(() => {
+    if (!classOptionsModal) return undefined;
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setClassOptionsModal(null);
+      }
+    };
+
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [classOptionsModal]);
+
+  const openProjectModal = (classItem) => {
+    setProjectModalClosing(false);
+    setProjectModal(classItem);
+  };
+
+  const closeProjectModal = () => {
+    setProjectModalClosing(true);
+    window.setTimeout(() => {
+      setProjectModal(null);
+      setProjectModalClosing(false);
+    }, 220);
+  };
 
   const services = [
     { 
@@ -36,12 +124,190 @@ function App() {
     }
   ];
 
+  const createPaintingPlaceholder = (index) => {
+    const palettes = [
+      ['#f093fb', '#f5576c'],
+      ['#84fab0', '#8fd3f4'],
+      ['#f6d365', '#fda085'],
+      ['#a8edea', '#fed6e3'],
+      ['#7f7fd5', '#86a8e7'],
+      ['#d299c2', '#fef9d7'],
+      ['#4facfe', '#00f2fe'],
+      ['#ffecd2', '#fcb69f'],
+      ['#cfd9df', '#e2ebf0'],
+      ['#fbc2eb', '#a6c1ee']
+    ];
+    const [start, end] = palettes[(index - 1) % palettes.length];
+    const svg = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="640" height="420" viewBox="0 0 640 420">
+        <defs>
+          <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="${start}"/>
+            <stop offset="100%" stop-color="${end}"/>
+          </linearGradient>
+        </defs>
+        <rect width="640" height="420" fill="url(#bg)"/>
+        <circle cx="510" cy="92" r="70" fill="rgba(255,255,255,0.28)"/>
+        <path d="M108 292 C172 182 230 174 294 276 C346 188 420 172 522 304 L108 304 Z" fill="rgba(255,255,255,0.44)"/>
+        <rect x="70" y="58" width="500" height="304" rx="24" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="10"/>
+        <text x="320" y="214" text-anchor="middle" font-family="Arial, sans-serif" font-size="42" font-weight="700" fill="rgba(255,255,255,0.92)">Painting ${index}</text>
+      </svg>
+    `;
+
+    return `data:image/svg+xml,${encodeURIComponent(svg)}`;
+  };
+
+  const ladiesNightPaintings = Array.from({ length: 10 }, (_, index) => {
+    const paintingNumber = index + 1;
+
+    if (paintingNumber === 1) {
+      return {
+        title: 'Blue Truck',
+        price: '$35',
+        image: LadiesNightBlueTruck,
+        alt: 'Blue Truck Ladies Night painting',
+        link: 'https://buy.stripe.com/4gMdR8bDA7r15PH0Go2kw02'
+      };
+    }
+
+    if (paintingNumber === 2) {
+      return {
+        title: 'Chicken',
+        price: '$35',
+        image: LadiesNightChicken,
+        alt: 'Chicken Ladies Night painting',
+        link: 'https://buy.stripe.com/fZuaEW9vs6mXemdexe2kw03'
+      };
+    }
+
+    if (paintingNumber === 3) {
+      return {
+        title: 'Boots Dirty',
+        price: '$35',
+        image: LadiesNightBootsDirty,
+        alt: 'Boots Dirty Ladies Night painting',
+        link: 'https://buy.stripe.com/8x214m4b88v50vn9cU2kw04'
+      };
+    }
+
+    if (paintingNumber === 4) {
+      return {
+        title: 'High Lander Purple Flowers',
+        price: '$35',
+        image: LadiesNightHighlanderPurple,
+        alt: 'High Lander Purple Flowers Ladies Night painting',
+        link: 'https://buy.stripe.com/7sYdR89vsbHhce5bl22kw05'
+      };
+    }
+
+    if (paintingNumber === 5) {
+      return {
+        title: 'Highlander Sunflower',
+        price: '$35',
+        image: LadiesNightHighlanderSunflower,
+        alt: 'Highlander Sunflower Ladies Night painting',
+        link: 'https://book.stripe.com/eVq8wO8ro26H2Dv0Go2kw06'
+      };
+    }
+
+    if (paintingNumber === 6) {
+      return {
+        title: 'Cup of Sunshine',
+        price: '$35',
+        image: CupOfSunshine,
+        alt: 'Cup of Sunshine Ladies Night painting',
+        link: 'https://book.stripe.com/5kQ3cu37426Ha5Xcp62kw07'
+      };
+    }
+
+    if (paintingNumber === 7) {
+      return {
+        title: 'Cactus',
+        price: '$35',
+        image: Cactus,
+        alt: 'Cactus Ladies Night painting',
+        link: 'https://book.stripe.com/14AfZg4b89z9emd3SA2kw08'
+      };
+    }
+
+    if (paintingNumber === 8) {
+      return {
+        title: 'Barn',
+        price: '$35',
+        image: Barn,
+        alt: 'Barn Ladies Night painting',
+        link: 'https://book.stripe.com/fZufZg7nk12D6TL0Go2kw09'
+      };
+    }
+
+    if (paintingNumber === 9) {
+      return {
+        title: 'Fence',
+        price: '$35',
+        image: Fence,
+        alt: 'Fence Ladies Night painting',
+        link: 'https://book.stripe.com/aFa14m7nk26H6TL9cU2kw0a'
+      };
+    }
+
+    if (paintingNumber === 10) {
+      return {
+        title: 'Spring Bird',
+        price: '$35',
+        image: SpringBird,
+        alt: 'Spring Bird Ladies Night painting',
+        link: 'https://book.stripe.com/cNicN49vs6mX3Hzcp62kw0b'
+      };
+    }
+
+    return {
+      title: `Ladies Night Painting ${paintingNumber}`,
+      price: '$35',
+      image: createPaintingPlaceholder(paintingNumber),
+      link: `https://book.stripe.com/placeholder-ladies-night-${String(paintingNumber).padStart(2, '0')}`
+    };
+  });
+
+  const doorHangerOptions = [
+    {
+      title: '18 inch Welcome Sign',
+      price: '$45',
+      image: Welcome,
+      alt: '18 inch Welcome Sign door hanger project',
+      link: 'https://book.stripe.com/28EaEW3747r11zr60I2kw0f'
+    },
+    {
+      title: '11 Seasons Hanger',
+      price: '$65',
+      image: ElevenSeasons,
+      alt: '11 Seasons Hanger door hanger project',
+      link: 'https://book.stripe.com/00wfZg9vs6mXfqh2Ow2kw0g'
+    }
+  ];
+
+  const slimeAndSandOptions = [
+    {
+      title: 'Sand Bottle',
+      price: '$15',
+      image: Sand,
+      alt: 'Sand Bottle project',
+      link: 'https://book.stripe.com/3cI4gy8ro26Hba188Q2kw0i'
+    },
+    {
+      title: 'Slime',
+      price: '$20',
+      image: Slime,
+      alt: 'Slime project',
+      link: 'https://book.stripe.com/14A7sK37426H4LD3SA2kw0j'
+    }
+  ];
+
   const upcomingClasses = [
     {
       title: 'Painting, Minigolf, laser tag',
       description: 'Day of fun lets help brighten up the space at Appalachian Asenso Mini Golf and Laser Tag in Pennington Gap, VA.',
       schedule: 'Jun 16, 2026 06:00pm - 08:00pm',
-      link: 'https://lp.constantcontactpages.com/ev/reg/u376ts6/lp/d2a653c2-8294-411b-ab57-7f5097036675?fbclid=IwY2xjawRV2npleHRuA2FlbQIxMABicmlkETFhT2NpQ2hoTTdxM2pwOTJFc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHqKD1HKOTvJ326jVBmn5WS2ZV0ZZoAB_Xn56zXCl-sQzDuXR-kkmY1kPXW7y_aem_EvbMYU2V4ea8tQmdAZ_MzA',
+      link: 'https://buy.stripe.com/00w4gydLI5iT2Dv88Q2kw01',
       featured: true,
       gradient: 'linear-gradient(135deg, #f6d365 0%, #fda085 100%)'
     },
@@ -49,76 +315,70 @@ function App() {
       title: 'Ladies Night',
       description: 'An evening of art, laughter, and connection. Every Thursday at our Pennington Gap studio.',
       schedule: 'Every Thursday • 6:00 – 8:00 PM',
-      link: 'https://lp.constantcontactpages.com/ev/reg/99pkryk/lp/056834c4-864a-4c37-b303-959670d797ce',
+      link: '#ladies-night-options',
       featured: true,
+      bookingOptions: ladiesNightPaintings,
+      bookingCta: 'Choose Your Painting →',
       gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'
-    },
-    {
-      title: 'Mommy & Me',
-      description: 'A beautiful bonding experience for mothers and children. Paint together and create lasting memories.',
-      schedule: 'Mother\'s Day Special',
-      link: 'https://lp.constantcontactpages.com/ev/reg/uam9uzb/lp/f6aeb366-3dad-4d8a-9bf3-682d652cebc9',
-      featured: true,
-      gradient: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)'
-    },
-    {
-      title: 'Donna Boots fundraiser',
-      description: 'Fundraiser to help raise funds for a mother, grandmother, and friend that lost everything in a house fire.',
-      schedule: 'Fundraiser',
-      link: 'https://lp.constantcontactpages.com/ev/reg/4dagw9a/lp/570271d5-e430-457a-bf49-cbe1cfc287c5',
-      featured: true,
-      gradient: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)'
-    },
-    {
-      title: 'Studio Makeover',
-      description: 'Refresh and redesign your creative space with a guided studio makeover session.',
-      schedule: 'Special Event',
-      link: 'https://lp.constantcontactpages.com/ev/reg/b8d92f9/lp/27a27b2d-7962-462e-bb96-6c40da4b7db4?fbclid=IwY2xjawQ5ax1leHRuA2FlbQIxMABicmlkETFXS0pOcER6QXZQb1F3eUdtc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHllHxugm8OEXxlLDwCNPEtpmOjGZb2u2wobm7U1ngchAet4yxsaGTVZzr9SV_aem_N0FU5c0WMoqqCbSIn5dcGA',
-      featured: true,
-      gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)'
     },
     {
       title: 'Crushed Glass',
       description: 'Discover the beauty of crushed glass art. Create stunning pieces with vibrant colors and unique textures in our guided workshop.',
       schedule: 'Jun 27, 2026 04:00pm - Jun 27, 2026 07:00pm',
-      link: 'https://lp.constantcontactpages.com/ev/reg/8jrt5c3/lp/f76f8ac2-0abb-41a0-85cc-18305e3eaa17?fbclid=IwY2xjawRLWolleHRuA2FlbQIxMABicmlkETFONlI1SXpSeWFTTng0dFVic3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHi-Xo1OHmStlBXdAX92kIyv-jBJyOp_v4P4EtL3RxpODsx3-cFy_Q1XKHROc_aem_cIz7qvS01D8R8mSPWZoXHw',
+      link: 'https://book.stripe.com/dRm14mePMdPp0vnbl22kw00',
       featured: true,
       gradient: 'linear-gradient(135deg, #7f7fd5 0%, #86a8e7 50%, #91eae4 100%)'
     },
     {
-      title: 'Slime fun',
-      description: 'Get hands-on with a playful slime workshop that is perfect for kids, families, and parties.',
-      schedule: 'make slime party',
-      link: 'https://lp.constantcontactpages.com/ev/reg/7ftq8ew/lp/a4a6785c-ac87-4f52-a1f5-0c33e92357fe',
-      gradient: 'linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%)'
+      title: 'Crushed Glass Christmas Tree',
+      description: 'Create a festive crushed glass Christmas tree with sparkle, texture, and guided studio instruction.',
+      schedule: 'Jul 11, 2026 04:00pm - 07:00pm',
+      link: 'https://book.stripe.com/00w3cu2309z92Dv3SA2kw0d',
+      featured: true,
+      image: CrushedGlassChristmas,
+      imageAlt: 'Crushed Glass Christmas Tree class project',
+      gradient: 'linear-gradient(135deg, #0f766e 0%, #16a34a 50%, #dc2626 100%)'
     },
     {
-      title: 'Mother\'s Day Class',
-      description: 'Celebrate Mother\'s Day with a special guided painting class designed for meaningful memories.',
-      schedule: 'Mother\'s Day Special',
-      link: 'https://lp.constantcontactpages.com/ev/reg/3eryzj6/lp/0afe94c9-d93a-4fe4-820b-def1cede5797',
-      gradient: 'linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%)'
+      title: 'Paint a Sled',
+      description: 'Paint a seasonal sled project in a guided studio class. $50 per person.',
+      schedule: 'Jul 18, 2026 04:00pm - 07:00pm',
+      link: 'https://book.stripe.com/28E00i2307r12DvfBi2kw0e',
+      featured: true,
+      image: Sled,
+      imageAlt: 'Paint a Sled class project',
+      gradient: 'linear-gradient(135deg, #7c2d12 0%, #b45309 50%, #facc15 100%)'
     },
     {
-      title: 'Winter Cardinal',
-      description: 'Paint a stunning winter scene featuring the iconic red cardinal — perfect for Virginia winters.',
-      schedule: 'Seasonal Workshop',
-      link: 'https://lp.constantcontactpages.com/ev/reg/5u8pqeu/lp/dc5e2665-fbc1-4c96-97c5-5b6c5666d21b',
-      gradient: 'linear-gradient(135deg, #d299c2 0%, #fef9d7 100%)'
+      title: 'Door Hanger Paint Party',
+      description: 'Choose between an 18 inch Welcome Sign or an 11 Seasons Hanger in this guided paint party.',
+      schedule: 'Jun 20, 2026 04:00pm - 06:00pm',
+      link: '#door-hanger-options',
+      featured: true,
+      bookingOptions: doorHangerOptions,
+      bookingCta: 'Choose Your Door Hanger →',
+      gradient: 'linear-gradient(135deg, #065f46 0%, #0f766e 45%, #f59e0b 100%)'
     },
     {
-      title: 'Paint Kits – Take Studio Home',
-      description: 'Take the Painting Outside The Lines studio experience home with you. Everything you need included.',
-      schedule: 'Available Now',
-      link: 'https://lp.constantcontactpages.com/ev/reg/4fg93fu/lp/b9b41c4c-8d1b-405d-9848-1903a4dd2518',
-      gradient: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)'
+      title: 'Red White & Blue Paint Party',
+      description: 'Create a patriotic red, white, and blue project in this guided paint party. $55 per person.',
+      schedule: 'May 30, 2026 04:00pm - 06:00pm',
+      link: 'https://book.stripe.com/28EaEW230eTtgulcp62kw0h',
+      featured: true,
+      image: Rwb,
+      imageAlt: 'Red White and Blue Paint Party project',
+      darkText: true,
+      gradient: 'linear-gradient(135deg, #1d4ed8 0%, #ffffff 50%, #dc2626 100%)'
     },
     {
-      title: 'Spring Door Hangers',
-      description: 'Brighten your home with beautiful hand-painted spring door hangers. Perfect for seasonal decor and gifts.',
-      schedule: 'Spring Special',
-      link: 'https://lp.constantcontactpages.com/ev/reg/y8qrndb/lp/a6aa89be-ee07-40a6-80b2-4fa79a29b0b0',
-      gradient: 'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)'
+      title: 'Slime & Sand Fun',
+      description: 'Choose between a colorful sand bottle or a hands-on slime project in this creative workshop.',
+      schedule: 'Jul 25, 2026 04:00pm - 06:00pm',
+      link: '#slime-sand-options',
+      featured: true,
+      bookingOptions: slimeAndSandOptions,
+      bookingCta: 'Choose Your Project →',
+      gradient: 'linear-gradient(135deg, #06b6d4 0%, #84cc16 50%, #f97316 100%)'
     },
   ];
 
@@ -220,7 +480,7 @@ function App() {
         },
         offers: {
           '@type': 'Offer',
-          url: 'https://lp.constantcontactpages.com/ev/reg/99pkryk/lp/056834c4-864a-4c37-b303-959670d797ce',
+          url: 'https://paintingoutsidethelinesstudios.com/#ladies-night-options',
           availability: 'https://schema.org/InStock'
         },
         organizer: {
@@ -540,66 +800,99 @@ function App() {
               marginBottom: '2rem'
             }}>
               {upcomingClasses.filter(c => c.featured).map((classItem, i) => (
-                <a
+                <article
                   key={i}
-                  href={classItem.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="no-underline"
-                  aria-label={`Register for ${classItem.title} – ${classItem.schedule}`}
-                  style={{ textDecoration: 'none' }}
+                  className={`br4 pa4 pa5-l relative overflow-hidden transition-all ${classItem.darkText ? 'black' : 'white'}`}
+                  style={{
+                    background: classItem.gradient,
+                    boxShadow: '0 10px 30px rgba(0,0,0,0.15)',
+                    transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                    minHeight: '280px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-12px) scale(1.02)';
+                    e.currentTarget.style.boxShadow = '0 25px 50px rgba(0,0,0,0.25)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                    e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.15)';
+                  }}
                 >
-                  <article 
-                    className="br4 pa4 pa5-l relative overflow-hidden transition-all white"
-                    style={{
-                      background: classItem.gradient,
-                      boxShadow: '0 10px 30px rgba(0,0,0,0.15)',
-                      transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                      minHeight: '280px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-between'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = 'translateY(-12px) scale(1.02)';
-                      e.currentTarget.style.boxShadow = '0 25px 50px rgba(0,0,0,0.25)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                      e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.15)';
-                    }}
-                  >
-                    <div>
-                      <div className="f6 fw6 mb2 white-80 tracked ttu" style={{ letterSpacing: '0.1em' }}>
-                        ★ Featured
-                      </div>
-                      <h3 className="f3 f2-l fw7 mb3 white" style={{ letterSpacing: '-0.01em' }}>
-                        {classItem.title}
-                      </h3>
-                      <p className="f5 lh-copy white-90 mb3">
-                        {classItem.description}
-                      </p>
+                  <div>
+                    <div className={`f6 fw6 mb2 tracked ttu ${classItem.darkText ? 'black-70' : 'white-80'}`} style={{ letterSpacing: '0.1em' }}>
+                      ★ Featured
                     </div>
-                    <div>
-                      <div className="f6 white-80 mb3">
-                        <time dateTime={classItem.schedule === 'Every Thursday • 6:00 – 8:00 PM' ? 'RRRR' : undefined}>
-                          {classItem.schedule}
-                        </time>
-                      </div>
-                      <div 
-                        className="dib ph4 pv2 br-pill fw6 f6 transition-all"
-                        style={{
-                          background: 'rgba(255,255,255,0.2)',
-                          backdropFilter: 'blur(10px)',
-                          border: '2px solid rgba(255,255,255,0.3)',
-                          color: 'white'
-                        }}
-                      >
-                        Register Now →
-                      </div>
+                    <h3 className={`f3 f2-l fw7 mb3 ${classItem.darkText ? 'black' : 'white'}`} style={{ letterSpacing: '-0.01em' }}>
+                      {classItem.title}
+                    </h3>
+                    <p className={`f5 lh-copy mb3 ${classItem.darkText ? 'black-70' : 'white-90'}`}>
+                      {classItem.description}
+                    </p>
+                  </div>
+                  <div>
+                    <div className={`f6 mb3 ${classItem.darkText ? 'black-70' : 'white-80'}`}>
+                      <time dateTime={classItem.schedule === 'Every Thursday • 6:00 – 8:00 PM' ? 'RRRR' : undefined}>
+                        {classItem.schedule}
+                      </time>
                     </div>
-                  </article>
-                </a>
+                    <div className="flex flex-wrap items-center" style={{ gap: '0.75rem' }}>
+                      {classItem.bookingOptions ? (
+                        <button
+                          type="button"
+                          className="pointer bn dib ph4 pv2 br-pill fw6 f6 transition-all"
+                          style={{
+                            background: classItem.darkText ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.2)',
+                            backdropFilter: 'blur(10px)',
+                            border: classItem.darkText ? '2px solid rgba(0,0,0,0.25)' : '2px solid rgba(255,255,255,0.3)',
+                            color: classItem.darkText ? 'black' : 'white'
+                          }}
+                          onClick={() => {
+                            if (classItem.title === 'Ladies Night') {
+                              setLadiesNightModalOpen(true);
+                            } else {
+                              setClassOptionsModal(classItem);
+                            }
+                          }}
+                        >
+                          {classItem.bookingCta || 'Choose Your Option →'}
+                        </button>
+                      ) : (
+                        <a
+                          href={classItem.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="dib ph4 pv2 br-pill fw6 f6 transition-all no-underline"
+                          aria-label={`Register for ${classItem.title} – ${classItem.schedule}`}
+                          style={{
+                            background: classItem.darkText ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.2)',
+                            backdropFilter: 'blur(10px)',
+                            border: classItem.darkText ? '2px solid rgba(0,0,0,0.25)' : '2px solid rgba(255,255,255,0.3)',
+                            color: classItem.darkText ? 'black' : 'white'
+                          }}
+                        >
+                          Register Now →
+                        </a>
+                      )}
+                      {classItem.image && (
+                        <button
+                          type="button"
+                          className="project-preview-button pointer dib ph4 pv2 br-pill fw6 f6 transition-all"
+                          style={{
+                            background: classItem.darkText ? 'black' : 'white',
+                            border: classItem.darkText ? '2px solid black' : '2px solid white',
+                            color: classItem.darkText ? 'white' : '#111'
+                          }}
+                          onClick={() => openProjectModal(classItem)}
+                        >
+                          View Project
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </article>
               ))}
             </div>
           </div>
@@ -681,11 +974,13 @@ function App() {
                 <div className="fw6 black mb2 f5">Ladies Night – Pennington Gap</div>
                 <time className="black-60 db" dateTime="2025-01-02T18:00">Every Thursday, 6:00 – 8:00 PM</time>
                 <a 
-                  href="https://lp.constantcontactpages.com/ev/reg/99pkryk/lp/056834c4-864a-4c37-b303-959670d797ce"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="#ladies-night-options"
                   className="f7 black no-underline mt2 dib hover-underline"
                   aria-label="Register for Ladies Night painting class – every Thursday 6 to 8 PM"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    setLadiesNightModalOpen(true);
+                  }}
                 >
                   Register here →
                 </a>
@@ -935,31 +1230,6 @@ function App() {
             >
               Browse Classes
             </a>
-            <a 
-              href="https://lp.constantcontactpages.com/ev/reg/4fg93fu/lp/b9b41c4c-8d1b-405d-9848-1903a4dd2518" 
-              target="_blank"
-              rel="noopener noreferrer"
-              className="dib w-100 w-auto-ns white ph4 pv3 ph5-l br-pill no-underline fw6 transition-all tc"
-              aria-label="Order a take-home paint kit from Painting Outside The Lines Studio"
-              style={{ 
-                border: '2px solid white',
-                transition: 'all 0.3s ease',
-                minHeight: '48px',
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'white';
-                e.currentTarget.style.color = '#667eea';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'transparent';
-                e.currentTarget.style.color = 'white';
-              }}
-            >
-              Order a Paint Kit
-            </a>
           </div>
         </div>
       </section>
@@ -1063,6 +1333,242 @@ function App() {
           </div>
         </div>
       </div>
+
+      {projectModal && (
+        <div
+          className={`project-modal-overlay fixed top-0 left-0 w-100 h-100 flex items-center justify-center pa3 pa4-l ${projectModalClosing ? 'project-modal-closing' : ''}`}
+          role="presentation"
+          onClick={closeProjectModal}
+        >
+          <section
+            className="project-modal-panel bg-white black br3 overflow-hidden relative"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="project-modal-title"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button
+              type="button"
+              className="project-modal-close absolute bg-white black pointer br-100 flex items-center justify-center"
+              aria-label="Close project image"
+              onClick={closeProjectModal}
+            >
+              ×
+            </button>
+            <img
+              src={projectModal.image}
+              alt={projectModal.imageAlt || projectModal.title}
+              className="db w-100"
+              style={{
+                maxHeight: '72vh',
+                objectFit: 'contain',
+                background: '#f4f4f4'
+              }}
+            />
+            <div className="pa4">
+              <h2 id="project-modal-title" className="f4 f3-l fw7 black ma0 mb2" style={{ letterSpacing: '-0.01em' }}>
+                {projectModal.title}
+              </h2>
+              <p className="f6 black-60 ma0">{projectModal.schedule}</p>
+            </div>
+          </section>
+        </div>
+      )}
+
+      {ladiesNightModalOpen && (
+        <div
+          className="fixed top-0 left-0 w-100 h-100 flex items-center justify-center pa3 pa4-l"
+          style={{
+            background: 'rgba(0,0,0,0.72)',
+            zIndex: 1200
+          }}
+          role="presentation"
+          onClick={() => setLadiesNightModalOpen(false)}
+        >
+          <section
+            id="ladies-night-options"
+            className="bg-white black br3 w-100 overflow-hidden"
+            style={{
+              maxWidth: '960px',
+              maxHeight: '88vh',
+              boxShadow: '0 30px 80px rgba(0,0,0,0.35)'
+            }}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="ladies-night-title"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="flex justify-between items-start pa4 pa5-l pb3">
+              <div>
+                <h2 id="ladies-night-title" className="f3 f2-l fw7 ma0 mb2 black" style={{ letterSpacing: '-0.02em' }}>
+                  Ladies Night Paintings
+                </h2>
+                <p className="f6 f5-l lh-copy black-60 ma0">
+                  Choose your painting for Thursday night.
+                </p>
+              </div>
+              <button
+                type="button"
+                className="bg-transparent bn pointer black f2 lh-solid pa2"
+                aria-label="Close Ladies Night painting choices"
+                onClick={() => setLadiesNightModalOpen(false)}
+              >
+                ×
+              </button>
+            </div>
+
+            <div
+              className="pa4 pa5-l pt2 overflow-y-auto"
+              style={{
+                maxHeight: 'calc(88vh - 130px)'
+              }}
+            >
+              <div
+                className="grid"
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 180px), 1fr))',
+                  gap: '1rem'
+                }}
+              >
+                {ladiesNightPaintings.map((painting) => (
+                  <article
+                    key={painting.title}
+                    className="bg-white br3 overflow-hidden"
+                    style={{
+                      border: '1px solid rgba(0,0,0,0.1)',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.08)'
+                    }}
+                  >
+                    <img
+                      src={painting.image}
+                      alt={painting.alt || `${painting.title} placeholder`}
+                      className="db w-100"
+                      style={{
+                        aspectRatio: '4 / 3',
+                        objectFit: 'cover'
+                      }}
+                    />
+                    <div className="pa3">
+                      <div className="flex justify-between items-start mb3" style={{ gap: '0.75rem' }}>
+                        <h3 className="f6 fw6 black ma0">{painting.title}</h3>
+                        <div className="f6 fw7 black">{painting.price}</div>
+                      </div>
+                      <a
+                        href={painting.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="dib w-100 bg-black white pv2 ph3 br-pill no-underline fw6 tc f7"
+                        aria-label={`Book ${painting.title}`}
+                      >
+                        Book Now
+                      </a>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+        </div>
+      )}
+
+      {classOptionsModal && (
+        <div
+          className="fixed top-0 left-0 w-100 h-100 flex items-center justify-center pa3 pa4-l"
+          style={{
+            background: 'rgba(0,0,0,0.72)',
+            zIndex: 1200
+          }}
+          role="presentation"
+          onClick={() => setClassOptionsModal(null)}
+        >
+          <section
+            id="door-hanger-options"
+            className="bg-white black br3 w-100 overflow-hidden"
+            style={{
+              maxWidth: '720px',
+              maxHeight: '88vh',
+              boxShadow: '0 30px 80px rgba(0,0,0,0.35)'
+            }}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="class-options-title"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="flex justify-between items-start pa4 pa5-l pb3">
+              <div>
+                <h2 id="class-options-title" className="f3 f2-l fw7 ma0 mb2 black" style={{ letterSpacing: '-0.02em' }}>
+                  {classOptionsModal.title}
+                </h2>
+                <p className="f6 f5-l lh-copy black-60 ma0">
+                  Choose your project for this class.
+                </p>
+              </div>
+              <button
+                type="button"
+                className="bg-transparent bn pointer black f2 lh-solid pa2"
+                aria-label={`Close ${classOptionsModal.title} choices`}
+                onClick={() => setClassOptionsModal(null)}
+              >
+                ×
+              </button>
+            </div>
+
+            <div
+              className="pa4 pa5-l pt2 overflow-y-auto"
+              style={{
+                maxHeight: 'calc(88vh - 130px)'
+              }}
+            >
+              <div
+                className="grid"
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))',
+                  gap: '1rem'
+                }}
+              >
+                {classOptionsModal.bookingOptions.map((option) => (
+                  <article
+                    key={option.title}
+                    className="bg-white br3 overflow-hidden"
+                    style={{
+                      border: '1px solid rgba(0,0,0,0.1)',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.08)'
+                    }}
+                  >
+                    <img
+                      src={option.image}
+                      alt={option.alt || option.title}
+                      className="db w-100"
+                      style={{
+                        aspectRatio: '4 / 3',
+                        objectFit: 'contain',
+                        background: '#f4f4f4'
+                      }}
+                    />
+                    <div className="pa3">
+                      <div className="flex justify-between items-start mb3" style={{ gap: '0.75rem' }}>
+                        <h3 className="f6 fw6 black ma0">{option.title}</h3>
+                        <div className="f6 fw7 black">{option.price}</div>
+                      </div>
+                      <a
+                        href={option.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="dib w-100 bg-black white pv2 ph3 br-pill no-underline fw6 tc f7"
+                        aria-label={`Book ${option.title}`}
+                      >
+                        Book Now
+                      </a>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+        </div>
+      )}
 
       <style>{`
         * {
@@ -1185,6 +1691,83 @@ function App() {
 
         .hover-underline:hover {
           text-decoration: underline;
+        }
+
+        .project-preview-button:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 22px rgba(0,0,0,0.18);
+        }
+
+        .project-modal-overlay {
+          z-index: 1300;
+          background: rgba(0,0,0,0.76);
+          animation: projectOverlayIn 0.24s ease both;
+        }
+
+        .project-modal-overlay.project-modal-closing {
+          animation: projectOverlayOut 0.22s ease both;
+        }
+
+        .project-modal-panel {
+          width: min(92vw, 820px);
+          max-height: 90vh;
+          box-shadow: 0 30px 90px rgba(0,0,0,0.38);
+          animation: projectPanelIn 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        .project-modal-closing .project-modal-panel {
+          animation: projectPanelOut 0.22s ease both;
+        }
+
+        .project-modal-close {
+          top: 1rem;
+          right: 1rem;
+          width: 44px;
+          height: 44px;
+          border: 1px solid rgba(0,0,0,0.12);
+          font-size: 1.75rem;
+          line-height: 1;
+          z-index: 1;
+          box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+          transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .project-modal-close:hover {
+          background: black;
+          color: white;
+          transform: scale(1.06);
+        }
+
+        @keyframes projectOverlayIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+
+        @keyframes projectOverlayOut {
+          from { opacity: 1; }
+          to { opacity: 0; }
+        }
+
+        @keyframes projectPanelIn {
+          from {
+            opacity: 0;
+            transform: translateY(18px) scale(0.96);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+
+        @keyframes projectPanelOut {
+          from {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+          to {
+            opacity: 0;
+            transform: translateY(10px) scale(0.97);
+          }
         }
 
         /* ─── Focus visible for keyboard nav ─── */
