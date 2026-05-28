@@ -29,6 +29,19 @@ function App() {
   const [projectModal, setProjectModal] = useState(null);
   const [projectModalClosing, setProjectModalClosing] = useState(false);
 
+  function openProjectModal(classItem) {
+    setProjectModalClosing(false);
+    setProjectModal(classItem);
+  }
+
+  function closeProjectModal() {
+    setProjectModalClosing(true);
+    window.setTimeout(() => {
+      setProjectModal(null);
+      setProjectModalClosing(false);
+    }, 220);
+  }
+
   useEffect(() => {
     const handleScroll = () => {
       setScrollY(window.scrollY);
@@ -91,19 +104,6 @@ function App() {
     };
   }, [classOptionsModal]);
 
-  const openProjectModal = (classItem) => {
-    setProjectModalClosing(false);
-    setProjectModal(classItem);
-  };
-
-  const closeProjectModal = () => {
-    setProjectModalClosing(true);
-    window.setTimeout(() => {
-      setProjectModal(null);
-      setProjectModalClosing(false);
-    }, 220);
-  };
-
   const services = [
     { 
       title: 'Canvas Painting Classes', 
@@ -122,39 +122,6 @@ function App() {
       desc: 'Museum-quality instruction at prices that welcome everyone to the canvas. No experience necessary — ever.'
     }
   ];
-
-  const createPaintingPlaceholder = (index) => {
-    const palettes = [
-      ['#f093fb', '#f5576c'],
-      ['#84fab0', '#8fd3f4'],
-      ['#f6d365', '#fda085'],
-      ['#a8edea', '#fed6e3'],
-      ['#7f7fd5', '#86a8e7'],
-      ['#d299c2', '#fef9d7'],
-      ['#4facfe', '#00f2fe'],
-      ['#ffecd2', '#fcb69f'],
-      ['#cfd9df', '#e2ebf0'],
-      ['#fbc2eb', '#a6c1ee']
-    ];
-    const [start, end] = palettes[(index - 1) % palettes.length];
-    const svg = `
-      <svg xmlns="http://www.w3.org/2000/svg" width="640" height="420" viewBox="0 0 640 420">
-        <defs>
-          <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="${start}"/>
-            <stop offset="100%" stop-color="${end}"/>
-          </linearGradient>
-        </defs>
-        <rect width="640" height="420" fill="url(#bg)"/>
-        <circle cx="510" cy="92" r="70" fill="rgba(255,255,255,0.28)"/>
-        <path d="M108 292 C172 182 230 174 294 276 C346 188 420 172 522 304 L108 304 Z" fill="rgba(255,255,255,0.44)"/>
-        <rect x="70" y="58" width="500" height="304" rx="24" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="10"/>
-        <text x="320" y="214" text-anchor="middle" font-family="Arial, sans-serif" font-size="42" font-weight="700" fill="rgba(255,255,255,0.92)">Painting ${index}</text>
-      </svg>
-    `;
-
-    return `data:image/svg+xml,${encodeURIComponent(svg)}`;
-  };
 
   const ladiesNightPaintings = Array.from({ length: 10 }, (_, index) => {
     const paintingNumber = index + 1;
@@ -258,13 +225,6 @@ function App() {
         link: 'https://book.stripe.com/cNicN49vs6mX3Hzcp62kw0b'
       };
     }
-
-    return {
-      title: `Ladies Night Painting ${paintingNumber}`,
-      price: '$35',
-      image: createPaintingPlaceholder(paintingNumber),
-      link: `https://book.stripe.com/placeholder-ladies-night-${String(paintingNumber).padStart(2, '0')}`
-    };
   });
 
   const doorHangerOptions = [
