@@ -77,13 +77,15 @@
       fbq('track', 'PageView');
     }
 
-    if ('requestIdleCallback' in window) {
-      requestIdleCallback(loadFacebookPixel, { timeout: 3000 });
-    } else {
-      window.addEventListener('load', function() {
-        window.setTimeout(loadFacebookPixel, 1500);
-      });
+    function scheduleFacebookPixel() {
+      window.setTimeout(loadFacebookPixel, 8000);
     }
+
+    ['pointerdown', 'keydown', 'scroll'].forEach(function(eventName) {
+      window.addEventListener(eventName, loadFacebookPixel, { once: true, passive: true });
+    });
+
+    window.addEventListener('load', scheduleFacebookPixel, { once: true });
     </script>
     <!-- End Meta Pixel Code -->
 
@@ -232,9 +234,9 @@
     }
     </script>
 
-    <script type="module" crossorigin src="/assets/index-BStWFtIc.js"></script>
+    <script type="module" crossorigin src="/assets/index-G_b5q3qd.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/vendor-C6qNFpnO.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-BRC2iH5u.css">
+    <link rel="stylesheet" crossorigin href="/assets/index-Cv3SIRaD.css">
   </head>
   <body>
     <noscript><img height="1" width="1" style="display:none"
