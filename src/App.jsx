@@ -20,6 +20,9 @@ import ElevenSeasons from './assets/11seasons.webp';
 import Rwb from './assets/rwb.webp';
 import Sand from './assets/sand.webp';
 import Slime from './assets/slime.webp';
+import Highlander from './assets/highlander.webp';
+import CrossCrushedGlass from './assets/cross crushed glass.webp';
+import CrushedGlassFlag from './assets/crushedglassflag.webp';
 
 function App() {
   const [scrollY, setScrollY] = useState(0);
@@ -285,6 +288,8 @@ function App() {
       description: 'Discover the beauty of crushed glass art. Create stunning pieces with vibrant colors and unique textures in our guided workshop.',
       schedule: 'Jun 27, 2026 04:00pm - Jun 27, 2026 07:00pm',
       link: 'https://book.stripe.com/dRm14mePMdPp0vnbl22kw00',
+      booked: true,
+      bookedMessage: "We're booked! Keep tabs for updates on the next class.",
       featured: true,
       gradient: 'linear-gradient(135deg, #7f7fd5 0%, #86a8e7 50%, #91eae4 100%)'
     },
@@ -297,6 +302,27 @@ function App() {
       image: CrushedGlassChristmas,
       imageAlt: 'Crushed Glass Christmas Tree class project',
       gradient: 'linear-gradient(135deg, #0f766e 0%, #16a34a 50%, #dc2626 100%)'
+    },
+    {
+      title: 'Crushed Glass Cross',
+      description: 'Create an Old Rugged Cross crushed glass project with guided studio instruction. $65 per person.',
+      schedule: 'Aug 29, 2026 04:00pm - 07:00pm',
+      link: 'https://book.stripe.com/fZu9AS5fcfXx2Dvbl22kw0n',
+      featured: true,
+      image: CrossCrushedGlass,
+      imageAlt: 'Old Rugged Cross crushed glass class project',
+      gradient: 'linear-gradient(135deg, #334155 0%, #8b5e34 52%, #dbeafe 100%)'
+    },
+    {
+      title: 'Red, White & Blue Crushed Glass',
+      description: 'Create a patriotic red, white, and blue crushed glass flag project with guided studio instruction. $65 per person.',
+      schedule: 'Aug 15, 2026 04:00pm - 07:00pm',
+      link: 'https://book.stripe.com/14A5kC4b8fXxfqhfBi2kw0o',
+      featured: true,
+      image: CrushedGlassFlag,
+      imageAlt: 'Red, white, and blue crushed glass flag class project',
+      gradient: 'linear-gradient(135deg, #1e3a8a 0%, #ffffff 48%, #dc2626 100%)',
+      darkText: true
     },
     {
       title: 'Paint a Sled',
@@ -338,6 +364,17 @@ function App() {
       bookingOptions: slimeAndSandOptions,
       bookingCta: 'Choose Your Project →',
       gradient: 'linear-gradient(135deg, #06b6d4 0%, #84cc16 50%, #f97316 100%)'
+    },
+    {
+      title: 'Highlander Cow Paint Party',
+      description: 'Paint a Highlander cow set against a patriotic American flag-inspired background, finished with bright floral details.',
+      schedule: '2:30 PM - 4:30 PM',
+      link: 'https://buy.stripe.com/7sYdR8230bHh0vn60I2kw0k',
+      featured: true,
+      image: Highlander,
+      imageAlt: 'Highlander cow painting with an American flag background and flowers',
+      gradient: 'linear-gradient(135deg, #991b1b 0%, #ffffff 48%, #1e3a8a 100%)',
+      darkText: true
     },
   ];
 
@@ -471,7 +508,7 @@ function App() {
             offers: {
               '@type': 'Offer',
               url: classItem.link,
-              availability: 'https://schema.org/InStock'
+              availability: classItem.booked ? 'https://schema.org/SoldOut' : 'https://schema.org/InStock'
             },
             organizer: {
               '@type': 'Organization',
@@ -798,7 +835,20 @@ function App() {
                       </time>
                     </div>
                     <div className="flex flex-wrap items-center" style={{ gap: '0.75rem' }}>
-                      {classItem.bookingOptions ? (
+                      {classItem.booked ? (
+                        <div
+                          className="dib ph4 pv2 br-pill fw6 f6"
+                          role="status"
+                          style={{
+                            background: classItem.darkText ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.22)',
+                            backdropFilter: 'blur(10px)',
+                            border: classItem.darkText ? '2px solid rgba(0,0,0,0.25)' : '2px solid rgba(255,255,255,0.35)',
+                            color: classItem.darkText ? 'black' : 'white'
+                          }}
+                        >
+                          {classItem.bookedMessage || "We're booked! Keep tabs for updates on the next class."}
+                        </div>
+                      ) : classItem.bookingOptions ? (
                         <button
                           type="button"
                           className="pointer bn dib ph4 pv2 br-pill fw6 f6 transition-all"

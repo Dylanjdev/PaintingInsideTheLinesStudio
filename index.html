@@ -77,13 +77,15 @@
       fbq('track', 'PageView');
     }
 
-    if ('requestIdleCallback' in window) {
-      requestIdleCallback(loadFacebookPixel, { timeout: 3000 });
-    } else {
-      window.addEventListener('load', function() {
-        window.setTimeout(loadFacebookPixel, 1500);
-      });
+    function scheduleFacebookPixel() {
+      window.setTimeout(loadFacebookPixel, 8000);
     }
+
+    ['pointerdown', 'keydown', 'scroll'].forEach(function(eventName) {
+      window.addEventListener(eventName, loadFacebookPixel, { once: true, passive: true });
+    });
+
+    window.addEventListener('load', scheduleFacebookPixel, { once: true });
     </script>
     <!-- End Meta Pixel Code -->
 
