@@ -23,6 +23,12 @@ import Slime from './assets/slime.webp';
 import Highlander from './assets/highlander.webp';
 import CrossCrushedGlass from './assets/cross crushed glass.webp';
 import CrushedGlassFlag from './assets/crushedglassflag.webp';
+import CuttingBoard from './assets/CuttingBoard.webp';
+import Sunflower from './assets/sunflower.webp';
+import CrushedGlassCat from './assets/crushedglasscat.webp';
+import CrushedGlassFlowers from './assets/crushedglassflowers.webp';
+import CrushedGlassHummingbird from './assets/crushedglasshummingbird.webp';
+import BeachBlockParty from './assets/beachblockparty.webp';
 
 function App() {
   const [scrollY, setScrollY] = useState(0);
@@ -264,6 +270,71 @@ function App() {
     }
   ];
 
+  const crushedGlassOptions = [
+    {
+      title: '6 inch Sunflower',
+      price: '$35',
+      image: Sunflower,
+      alt: '6 inch sunflower crushed glass class project',
+      link: 'https://book.stripe.com/6oU5kC4b8eTt2DvfBi2kw0t'
+    },
+    {
+      title: '12 inch Cat',
+      price: '$65',
+      image: CrushedGlassCat,
+      alt: '12 inch cat crushed glass class project',
+      link: 'https://book.stripe.com/28E7sKdLI9z9ce5exe2kw0u'
+    },
+    {
+      title: '12 inch Flowers',
+      price: '$65',
+      image: CrushedGlassFlowers,
+      alt: '12 inch flowers crushed glass class project',
+      link: 'https://book.stripe.com/14A00i6jg9z9emddta2kw0w'
+    },
+    {
+      title: '18 inch Hummingbird',
+      price: '$65',
+      image: CrushedGlassHummingbird,
+      alt: '18 inch hummingbird crushed glass class project',
+      link: 'https://book.stripe.com/6oUbJ0374aDd6TLagY2kw0x'
+    }
+  ];
+
+  const cuttingBoardOptions = [
+    {
+      title: 'Humming Bird',
+      price: '$35',
+      alt: 'Humming Bird cutting board design option',
+      link: 'https://book.stripe.com/9B64gy4b812D0vncp62kw0p'
+    },
+    {
+      title: 'Chicken',
+      price: '$35',
+      alt: 'Chicken cutting board design option',
+      link: 'https://book.stripe.com/14A4gy7nkbHha5XfBi2kw0q'
+    },
+    {
+      title: 'Cardinal',
+      price: '$35',
+      alt: 'Cardinal cutting board design option',
+      link: 'https://book.stripe.com/7sY28qdLI7r1emddta2kw0r'
+    }
+  ];
+
+  const beachBlockPartyOptions = [
+    {
+      title: 'Beach Block Party Sand Art',
+      price: '$15',
+      link: 'https://book.stripe.com/5kQ28qcHEeTt3Hzbl22kw0y'
+    },
+    {
+      title: 'Beach Block Party Slime',
+      price: '$20',
+      link: 'https://book.stripe.com/9B66oG4b8aDdba14WE2kw0z'
+    }
+  ];
+
   const upcomingClasses = [
     {
       title: 'Painting, Minigolf, laser tag',
@@ -285,12 +356,12 @@ function App() {
     },
     {
       title: 'Crushed Glass',
-      description: 'Discover the beauty of crushed glass art. Create stunning pieces with vibrant colors and unique textures in our guided workshop.',
-      schedule: 'Jun 27, 2026 04:00pm - Jun 27, 2026 07:00pm',
-      link: 'https://book.stripe.com/dRm14mePMdPp0vnbl22kw00',
-      booked: true,
-      bookedMessage: "We're booked! Keep tabs for updates on the next class.",
+      description: 'Choose between a 6 inch sunflower, 12 inch cat, 12 inch flowers, or 18 inch hummingbird in this guided crushed glass workshop.',
+      schedule: 'Jul 25, 2026 04:00pm - 07:00pm',
+      link: '#crushed-glass-options',
       featured: true,
+      bookingOptions: crushedGlassOptions,
+      bookingCta: 'Choose Your Project →',
       gradient: 'linear-gradient(135deg, #7f7fd5 0%, #86a8e7 50%, #91eae4 100%)'
     },
     {
@@ -364,6 +435,43 @@ function App() {
       bookingOptions: slimeAndSandOptions,
       bookingCta: 'Choose Your Project →',
       gradient: 'linear-gradient(135deg, #06b6d4 0%, #84cc16 50%, #f97316 100%)'
+    },
+    {
+      title: 'Paint a Cutting Board',
+      description: 'Pick your design and enjoy ice cream while you paint a cutting board at Small Town Scoops. All supplies included, no experience needed.',
+      schedule: 'Jul 24, 2026 06:00pm - 08:00pm',
+      link: '#cutting-board-options',
+      featured: true,
+      bookingOptions: cuttingBoardOptions,
+      bookingCta: 'Choose Your Design →',
+      darkText: true,
+      image: CuttingBoard,
+      imageAlt: 'Paint a Cutting Board class flyer with bird and chicken design options',
+      location: {
+        name: 'Small Town Scoops',
+        address: {
+          '@type': 'PostalAddress',
+          streetAddress: '179 Chappell Dr Ste 202',
+          addressLocality: 'Jonesville',
+          addressRegion: 'VA',
+          postalCode: '24263',
+          addressCountry: 'US'
+        }
+      },
+      gradient: 'linear-gradient(135deg, #f8fafc 0%, #f0b7a4 48%, #5f6f52 100%)'
+    },
+    {
+      title: 'Beach Block Party',
+      description: 'Make colorful sand art or stretchy slime at this fun, hands-on beach-themed block party.',
+      schedule: 'Aug 8, 2026 06:00pm - 08:00pm',
+      link: '#beach-block-party-options',
+      featured: true,
+      bookingOptions: beachBlockPartyOptions,
+      bookingCta: 'Choose Your Activity →',
+      darkText: true,
+      image: BeachBlockParty,
+      imageAlt: 'Beach Block Party flyer featuring sand art and slime activities',
+      gradient: 'linear-gradient(135deg, #fef3c7 0%, #22d3ee 48%, #fb7185 100%)'
     },
     {
       title: 'Highlander Cow Paint Party',
@@ -502,8 +610,8 @@ function App() {
             eventStatus: 'https://schema.org/EventScheduled',
             location: {
               '@type': 'Place',
-              name: 'Painting Outside The Lines Studio',
-              address: studioAddress
+              name: classItem.location?.name || 'Painting Outside The Lines Studio',
+              address: classItem.location?.address || studioAddress
             },
             offers: {
               '@type': 'Offer',
@@ -1492,7 +1600,7 @@ function App() {
           onClick={() => setClassOptionsModal(null)}
         >
           <section
-            id="door-hanger-options"
+            id={classOptionsModal.link?.startsWith('#') ? classOptionsModal.link.slice(1) : 'class-options'}
             className="bg-white black br3 w-100 overflow-hidden"
             style={{
               maxWidth: '720px',
@@ -1546,19 +1654,28 @@ function App() {
                       boxShadow: '0 4px 12px rgba(0,0,0,0.08)'
                     }}
                   >
-                    <img
-                      src={option.image}
-                      alt={option.alt || option.title}
-                      className="db w-100"
-                      style={{
-                        aspectRatio: '4 / 3',
-                        objectFit: 'contain',
-                        background: '#f4f4f4'
-                      }}
-                    />
+                    {option.image && (
+                      <img
+                        src={option.image}
+                        alt={option.alt || option.title}
+                        className="db w-100"
+                        style={{
+                          aspectRatio: '4 / 3',
+                          objectFit: 'contain',
+                          background: '#f4f4f4'
+                        }}
+                      />
+                    )}
                     <div className="pa3">
                       <div className="flex justify-between items-start mb3" style={{ gap: '0.75rem' }}>
-                        <h3 className="f6 fw6 black ma0">{option.title}</h3>
+                        <div>
+                          {!option.image && (
+                            <div className="f7 fw6 black-60 mb2" style={{ letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                              Design Option
+                            </div>
+                          )}
+                          <h3 className={option.image ? 'f6 fw6 black ma0' : 'f4 fw7 black ma0'}>{option.title}</h3>
+                        </div>
                         <div className="f6 fw7 black">{option.price}</div>
                       </div>
                       <a

@@ -12,13 +12,6 @@ export default defineConfig({
         drop_debugger: true,
         pure_funcs: ['console.log']
       }
-    },
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom']
-        }
-      }
     }
   }
 })
