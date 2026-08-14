@@ -3,40 +3,33 @@ import Inside from './assets/Inside.webp';
 import Outside from './assets/Outside.webp';
 import PaintImage from './assets/PaintImage.webp';
 import HandPainting from './assets/HandPainting.webp';
-import LadiesNightBlueTruck from './assets/ladiesnightbluetruck.webp';
-import LadiesNightChicken from './assets/ladiesnightchicken.webp';
-import LadiesNightBootsDirty from './assets/ladiesnightbootsdirty.webp';
-import LadiesNightHighlanderPurple from './assets/ladiesnighthighlanderpurple.webp';
-import LadiesNightHighlanderSunflower from './assets/ladiesnighthighlandersunflower.webp';
-import CupOfSunshine from './assets/cupofsunshine.webp';
-import Cactus from './assets/cactus.webp';
-import Barn from './assets/barn.webp';
-import Fence from './assets/fence.webp';
-import SpringBird from './assets/springbird.webp';
-import CrushedGlassChristmas from './assets/crushedglasschristmas.webp';
-import Sled from './assets/sled.webp';
-import Welcome from './assets/welcome.webp';
-import ElevenSeasons from './assets/11seasons.webp';
-import Rwb from './assets/rwb.webp';
-import Sand from './assets/sand.webp';
-import Slime from './assets/slime.webp';
-import Highlander from './assets/highlander.webp';
-import CrossCrushedGlass from './assets/cross crushed glass.webp';
-import CrushedGlassFlag from './assets/crushedglassflag.webp';
-import CuttingBoard from './assets/CuttingBoard.webp';
-import Sunflower from './assets/sunflower.webp';
-import CrushedGlassCat from './assets/crushedglasscat.webp';
-import CrushedGlassFlowers from './assets/crushedglassflowers.webp';
-import CrushedGlassHummingbird from './assets/crushedglasshummingbird.webp';
-import BeachBlockParty from './assets/beachblockparty.webp';
 
 function App() {
   const [scrollY, setScrollY] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [ladiesNightModalOpen, setLadiesNightModalOpen] = useState(false);
+  const [classes, setClasses] = useState([]);
   const [classOptionsModal, setClassOptionsModal] = useState(null);
+  const [optionQuantities, setOptionQuantities] = useState({});
   const [projectModal, setProjectModal] = useState(null);
   const [projectModalClosing, setProjectModalClosing] = useState(false);
+
+  async function startCheckout(optionId, quantity = 1) {
+    try {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ optionId, quantity })
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.assign(data.url);
+      } else {
+        window.alert('Sorry, something went wrong starting checkout. Please try again.');
+      }
+    } catch {
+      window.alert('Sorry, something went wrong starting checkout. Please try again.');
+    }
+  }
 
   function openProjectModal(classItem) {
     setProjectModalClosing(false);
@@ -60,22 +53,19 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (!ladiesNightModalOpen) return undefined;
-
-    const handleKeyDown = (event) => {
-      if (event.key === 'Escape') {
-        setLadiesNightModalOpen(false);
-      }
-    };
-
-    document.body.style.overflow = 'hidden';
-    window.addEventListener('keydown', handleKeyDown);
-
+    let cancelled = false;
+    fetch('/api/classes')
+      .then((res) => res.json())
+      .then((data) => {
+        if (!cancelled) setClasses(Array.isArray(data) ? data : []);
+      })
+      .catch(() => {
+        if (!cancelled) setClasses([]);
+      });
     return () => {
-      document.body.style.overflow = '';
-      window.removeEventListener('keydown', handleKeyDown);
+      cancelled = true;
     };
-  }, [ladiesNightModalOpen]);
+  }, []);
 
   useEffect(() => {
     if (!projectModal) return undefined;
@@ -132,359 +122,6 @@ function App() {
     }
   ];
 
-  const ladiesNightPaintings = Array.from({ length: 10 }, (_, index) => {
-    const paintingNumber = index + 1;
-
-    if (paintingNumber === 1) {
-      return {
-        title: 'Blue Truck',
-        price: '$35',
-        image: LadiesNightBlueTruck,
-        alt: 'Blue Truck Ladies Night painting',
-        link: 'https://buy.stripe.com/4gMdR8bDA7r15PH0Go2kw02'
-      };
-    }
-
-    if (paintingNumber === 2) {
-      return {
-        title: 'Chicken',
-        price: '$35',
-        image: LadiesNightChicken,
-        alt: 'Chicken Ladies Night painting',
-        link: 'https://buy.stripe.com/fZuaEW9vs6mXemdexe2kw03'
-      };
-    }
-
-    if (paintingNumber === 3) {
-      return {
-        title: 'Boots Dirty',
-        price: '$35',
-        image: LadiesNightBootsDirty,
-        alt: 'Boots Dirty Ladies Night painting',
-        link: 'https://buy.stripe.com/8x214m4b88v50vn9cU2kw04'
-      };
-    }
-
-    if (paintingNumber === 4) {
-      return {
-        title: 'High Lander Purple Flowers',
-        price: '$35',
-        image: LadiesNightHighlanderPurple,
-        alt: 'High Lander Purple Flowers Ladies Night painting',
-        link: 'https://buy.stripe.com/7sYdR89vsbHhce5bl22kw05'
-      };
-    }
-
-    if (paintingNumber === 5) {
-      return {
-        title: 'Highlander Sunflower',
-        price: '$35',
-        image: LadiesNightHighlanderSunflower,
-        alt: 'Highlander Sunflower Ladies Night painting',
-        link: 'https://book.stripe.com/eVq8wO8ro26H2Dv0Go2kw06'
-      };
-    }
-
-    if (paintingNumber === 6) {
-      return {
-        title: 'Cup of Sunshine',
-        price: '$35',
-        image: CupOfSunshine,
-        alt: 'Cup of Sunshine Ladies Night painting',
-        link: 'https://book.stripe.com/5kQ3cu37426Ha5Xcp62kw07'
-      };
-    }
-
-    if (paintingNumber === 7) {
-      return {
-        title: 'Cactus',
-        price: '$35',
-        image: Cactus,
-        alt: 'Cactus Ladies Night painting',
-        link: 'https://book.stripe.com/14AfZg4b89z9emd3SA2kw08'
-      };
-    }
-
-    if (paintingNumber === 8) {
-      return {
-        title: 'Barn',
-        price: '$35',
-        image: Barn,
-        alt: 'Barn Ladies Night painting',
-        link: 'https://book.stripe.com/fZufZg7nk12D6TL0Go2kw09'
-      };
-    }
-
-    if (paintingNumber === 9) {
-      return {
-        title: 'Fence',
-        price: '$35',
-        image: Fence,
-        alt: 'Fence Ladies Night painting',
-        link: 'https://book.stripe.com/aFa14m7nk26H6TL9cU2kw0a'
-      };
-    }
-
-    if (paintingNumber === 10) {
-      return {
-        title: 'Spring Bird',
-        price: '$35',
-        image: SpringBird,
-        alt: 'Spring Bird Ladies Night painting',
-        link: 'https://book.stripe.com/cNicN49vs6mX3Hzcp62kw0b'
-      };
-    }
-  });
-
-  const doorHangerOptions = [
-    {
-      title: '18 inch Welcome Sign',
-      price: '$45',
-      image: Welcome,
-      alt: '18 inch Welcome Sign door hanger project',
-      link: 'https://book.stripe.com/28EaEW3747r11zr60I2kw0f'
-    },
-    {
-      title: '11 Seasons Hanger',
-      price: '$65',
-      image: ElevenSeasons,
-      alt: '11 Seasons Hanger door hanger project',
-      link: 'https://book.stripe.com/00wfZg9vs6mXfqh2Ow2kw0g'
-    }
-  ];
-
-  const slimeAndSandOptions = [
-    {
-      title: 'Sand Bottle',
-      price: '$15',
-      image: Sand,
-      alt: 'Sand Bottle project',
-      link: 'https://book.stripe.com/3cI4gy8ro26Hba188Q2kw0i'
-    },
-    {
-      title: 'Slime',
-      price: '$20',
-      image: Slime,
-      alt: 'Slime project',
-      link: 'https://book.stripe.com/14A7sK37426H4LD3SA2kw0j'
-    }
-  ];
-
-  const crushedGlassOptions = [
-    {
-      title: '6 inch Sunflower',
-      price: '$35',
-      image: Sunflower,
-      alt: '6 inch sunflower crushed glass class project',
-      link: 'https://book.stripe.com/6oU5kC4b8eTt2DvfBi2kw0t'
-    },
-    {
-      title: '12 inch Cat',
-      price: '$65',
-      image: CrushedGlassCat,
-      alt: '12 inch cat crushed glass class project',
-      link: 'https://book.stripe.com/28E7sKdLI9z9ce5exe2kw0u'
-    },
-    {
-      title: '12 inch Flowers',
-      price: '$65',
-      image: CrushedGlassFlowers,
-      alt: '12 inch flowers crushed glass class project',
-      link: 'https://book.stripe.com/14A00i6jg9z9emddta2kw0w'
-    },
-    {
-      title: '18 inch Hummingbird',
-      price: '$65',
-      image: CrushedGlassHummingbird,
-      alt: '18 inch hummingbird crushed glass class project',
-      link: 'https://book.stripe.com/6oUbJ0374aDd6TLagY2kw0x'
-    }
-  ];
-
-  const cuttingBoardOptions = [
-    {
-      title: 'Humming Bird',
-      price: '$35',
-      alt: 'Humming Bird cutting board design option',
-      link: 'https://book.stripe.com/9B64gy4b812D0vncp62kw0p'
-    },
-    {
-      title: 'Chicken',
-      price: '$35',
-      alt: 'Chicken cutting board design option',
-      link: 'https://book.stripe.com/14A4gy7nkbHha5XfBi2kw0q'
-    },
-    {
-      title: 'Cardinal',
-      price: '$35',
-      alt: 'Cardinal cutting board design option',
-      link: 'https://book.stripe.com/7sY28qdLI7r1emddta2kw0r'
-    }
-  ];
-
-  const beachBlockPartyOptions = [
-    {
-      title: 'Beach Block Party Sand Art',
-      price: '$15',
-      link: 'https://book.stripe.com/5kQ28qcHEeTt3Hzbl22kw0y'
-    },
-    {
-      title: 'Beach Block Party Slime',
-      price: '$20',
-      link: 'https://book.stripe.com/9B66oG4b8aDdba14WE2kw0z'
-    }
-  ];
-
-  const upcomingClasses = [
-    {
-      title: 'Painting, Minigolf, laser tag',
-      description: 'Day of fun lets help brighten up the space at Appalachian Asenso Mini Golf and Laser Tag in Pennington Gap, VA.',
-      schedule: 'Jun 16, 2026 06:00pm - 08:00pm',
-      link: 'https://buy.stripe.com/00w4gydLI5iT2Dv88Q2kw01',
-      featured: true,
-      gradient: 'linear-gradient(135deg, #f6d365 0%, #fda085 100%)'
-    },
-    {
-      title: 'Ladies Night',
-      description: 'An evening of art, laughter, and connection. Every Thursday at our Pennington Gap studio.',
-      schedule: 'Every Thursday • 6:00 – 8:00 PM',
-      link: '#ladies-night-options',
-      featured: true,
-      bookingOptions: ladiesNightPaintings,
-      bookingCta: 'Choose Your Painting →',
-      gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'
-    },
-    {
-      title: 'Crushed Glass',
-      description: 'Choose between a 6 inch sunflower, 12 inch cat, 12 inch flowers, or 18 inch hummingbird in this guided crushed glass workshop.',
-      schedule: 'Jul 25, 2026 04:00pm - 07:00pm',
-      link: '#crushed-glass-options',
-      featured: true,
-      bookingOptions: crushedGlassOptions,
-      bookingCta: 'Choose Your Project →',
-      gradient: 'linear-gradient(135deg, #7f7fd5 0%, #86a8e7 50%, #91eae4 100%)'
-    },
-    {
-      title: 'Crushed Glass Christmas Tree',
-      description: 'Create a festive crushed glass Christmas tree with sparkle, texture, and guided studio instruction.',
-      schedule: 'Jul 11, 2026 04:00pm - 07:00pm',
-      link: 'https://book.stripe.com/00w3cu2309z92Dv3SA2kw0d',
-      featured: true,
-      image: CrushedGlassChristmas,
-      imageAlt: 'Crushed Glass Christmas Tree class project',
-      gradient: 'linear-gradient(135deg, #0f766e 0%, #16a34a 50%, #dc2626 100%)'
-    },
-    {
-      title: 'Crushed Glass Cross',
-      description: 'Create an Old Rugged Cross crushed glass project with guided studio instruction. $65 per person.',
-      schedule: 'Aug 29, 2026 04:00pm - 07:00pm',
-      link: 'https://book.stripe.com/fZu9AS5fcfXx2Dvbl22kw0n',
-      featured: true,
-      image: CrossCrushedGlass,
-      imageAlt: 'Old Rugged Cross crushed glass class project',
-      gradient: 'linear-gradient(135deg, #334155 0%, #8b5e34 52%, #dbeafe 100%)'
-    },
-    {
-      title: 'Red, White & Blue Crushed Glass',
-      description: 'Create a patriotic red, white, and blue crushed glass flag project with guided studio instruction. $65 per person.',
-      schedule: 'Aug 15, 2026 04:00pm - 07:00pm',
-      link: 'https://book.stripe.com/14A5kC4b8fXxfqhfBi2kw0o',
-      featured: true,
-      image: CrushedGlassFlag,
-      imageAlt: 'Red, white, and blue crushed glass flag class project',
-      gradient: 'linear-gradient(135deg, #1e3a8a 0%, #ffffff 48%, #dc2626 100%)',
-      darkText: true
-    },
-    {
-      title: 'Paint a Sled',
-      description: 'Paint a seasonal sled project in a guided studio class. $50 per person.',
-      schedule: 'Jul 18, 2026 04:00pm - 07:00pm',
-      link: 'https://book.stripe.com/28E00i2307r12DvfBi2kw0e',
-      featured: true,
-      image: Sled,
-      imageAlt: 'Paint a Sled class project',
-      gradient: 'linear-gradient(135deg, #7c2d12 0%, #b45309 50%, #facc15 100%)'
-    },
-    {
-      title: 'Door Hanger Paint Party',
-      description: 'Choose between an 18 inch Welcome Sign or an 11 Seasons Hanger in this guided paint party.',
-      schedule: 'Jun 20, 2026 04:00pm - 06:00pm',
-      link: '#door-hanger-options',
-      featured: true,
-      bookingOptions: doorHangerOptions,
-      bookingCta: 'Choose Your Door Hanger →',
-      gradient: 'linear-gradient(135deg, #065f46 0%, #0f766e 45%, #f59e0b 100%)'
-    },
-    {
-      title: 'Red White & Blue Paint Party',
-      description: 'Create a patriotic red, white, and blue project in this guided paint party. $55 per person.',
-      schedule: 'May 30, 2026 04:00pm - 06:00pm',
-      link: 'https://book.stripe.com/28EaEW230eTtgulcp62kw0h',
-      featured: true,
-      image: Rwb,
-      imageAlt: 'Red White and Blue Paint Party project',
-      darkText: true,
-      gradient: 'linear-gradient(135deg, #1d4ed8 0%, #ffffff 50%, #dc2626 100%)'
-    },
-    {
-      title: 'Slime & Sand Fun',
-      description: 'Choose between a colorful sand bottle or a hands-on slime project in this creative workshop.',
-      schedule: 'Jul 25, 2026 04:00pm - 06:00pm',
-      link: '#slime-sand-options',
-      featured: true,
-      bookingOptions: slimeAndSandOptions,
-      bookingCta: 'Choose Your Project →',
-      gradient: 'linear-gradient(135deg, #06b6d4 0%, #84cc16 50%, #f97316 100%)'
-    },
-    {
-      title: 'Paint a Cutting Board',
-      description: 'Pick your design and enjoy ice cream while you paint a cutting board at Small Town Scoops. All supplies included, no experience needed.',
-      schedule: 'Jul 24, 2026 06:00pm - 08:00pm',
-      link: '#cutting-board-options',
-      featured: true,
-      bookingOptions: cuttingBoardOptions,
-      bookingCta: 'Choose Your Design →',
-      darkText: true,
-      image: CuttingBoard,
-      imageAlt: 'Paint a Cutting Board class flyer with bird and chicken design options',
-      location: {
-        name: 'Small Town Scoops',
-        address: {
-          '@type': 'PostalAddress',
-          streetAddress: '179 Chappell Dr Ste 202',
-          addressLocality: 'Jonesville',
-          addressRegion: 'VA',
-          postalCode: '24263',
-          addressCountry: 'US'
-        }
-      },
-      gradient: 'linear-gradient(135deg, #f8fafc 0%, #f0b7a4 48%, #5f6f52 100%)'
-    },
-    {
-      title: 'Beach Block Party',
-      description: 'Make colorful sand art or stretchy slime at this fun, hands-on beach-themed block party.',
-      schedule: 'Aug 8, 2026 06:00pm - 08:00pm',
-      link: '#beach-block-party-options',
-      featured: true,
-      bookingOptions: beachBlockPartyOptions,
-      bookingCta: 'Choose Your Activity →',
-      darkText: true,
-      image: BeachBlockParty,
-      imageAlt: 'Beach Block Party flyer featuring sand art and slime activities',
-      gradient: 'linear-gradient(135deg, #fef3c7 0%, #22d3ee 48%, #fb7185 100%)'
-    },
-    {
-      title: 'Highlander Cow Paint Party',
-      description: 'Paint a Highlander cow set against a patriotic American flag-inspired background, finished with bright floral details.',
-      schedule: '2:30 PM - 4:30 PM',
-      link: 'https://buy.stripe.com/7sYdR8230bHh0vn60I2kw0k',
-      featured: true,
-      image: Highlander,
-      imageAlt: 'Highlander cow painting with an American flag background and flowers',
-      gradient: 'linear-gradient(135deg, #991b1b 0%, #ffffff 48%, #1e3a8a 100%)',
-      darkText: true
-    },
-  ];
 
   const studioAddress = {
     '@type': 'PostalAddress',
@@ -518,6 +155,7 @@ function App() {
   };
 
   const parseScheduleDates = (schedule) => {
+    if (!schedule) return {};
     const parts = schedule.split(' - ').map((part) => part.trim());
     if (!parts.length) return {};
 
@@ -545,10 +183,10 @@ function App() {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
     name: 'Upcoming Classes and Events',
-    itemListElement: upcomingClasses.map((classItem, index) => ({
+    itemListElement: classes.map((classItem, index) => ({
       '@type': 'ListItem',
       position: index + 1,
-      url: classItem.link,
+      url: 'https://paintingoutsidethelinesstudios.com/#classes',
       item: {
         '@type': 'Course',
         name: classItem.title,
@@ -584,7 +222,7 @@ function App() {
         },
         offers: {
           '@type': 'Offer',
-          url: 'https://paintingoutsidethelinesstudios.com/#ladies-night-options',
+          url: 'https://paintingoutsidethelinesstudios.com/#classes',
           availability: 'https://schema.org/InStock'
         },
         organizer: {
@@ -593,7 +231,7 @@ function App() {
           url: 'https://paintingoutsidethelinesstudios.com/'
         }
       },
-      ...upcomingClasses
+      ...classes
         .map((classItem) => {
           const parsed = parseScheduleDates(classItem.schedule);
           if (!parsed.startDate || classItem.title === 'Ladies Night') {
@@ -615,7 +253,7 @@ function App() {
             },
             offers: {
               '@type': 'Offer',
-              url: classItem.link,
+              url: 'https://paintingoutsidethelinesstudios.com/#classes',
               availability: classItem.booked ? 'https://schema.org/SoldOut' : 'https://schema.org/InStock'
             },
             organizer: {
@@ -903,7 +541,7 @@ function App() {
               gap: '1.5rem',
               marginBottom: '2rem'
             }}>
-              {upcomingClasses.filter(c => c.featured).map((classItem, i) => (
+              {classes.filter(c => c.featured).map((classItem, i) => (
                 <article
                   key={i}
                   className={`br4 pa4 pa5-l relative overflow-hidden transition-all ${classItem.darkText ? 'black' : 'white'}`}
@@ -956,32 +594,10 @@ function App() {
                         >
                           {classItem.bookedMessage || "We're booked! Keep tabs for updates on the next class."}
                         </div>
-                      ) : classItem.bookingOptions ? (
+                      ) : (
                         <button
                           type="button"
                           className="pointer bn dib ph4 pv2 br-pill fw6 f6 transition-all"
-                          style={{
-                            background: classItem.darkText ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.2)',
-                            backdropFilter: 'blur(10px)',
-                            border: classItem.darkText ? '2px solid rgba(0,0,0,0.25)' : '2px solid rgba(255,255,255,0.3)',
-                            color: classItem.darkText ? 'black' : 'white'
-                          }}
-                          onClick={() => {
-                            if (classItem.title === 'Ladies Night') {
-                              setLadiesNightModalOpen(true);
-                            } else {
-                              setClassOptionsModal(classItem);
-                            }
-                          }}
-                        >
-                          {classItem.bookingCta || 'Choose Your Option →'}
-                        </button>
-                      ) : (
-                        <a
-                          href={classItem.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="dib ph4 pv2 br-pill fw6 f6 transition-all no-underline"
                           aria-label={`Register for ${classItem.title} – ${classItem.schedule}`}
                           style={{
                             background: classItem.darkText ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.2)',
@@ -989,9 +605,10 @@ function App() {
                             border: classItem.darkText ? '2px solid rgba(0,0,0,0.25)' : '2px solid rgba(255,255,255,0.3)',
                             color: classItem.darkText ? 'black' : 'white'
                           }}
+                          onClick={() => setClassOptionsModal(classItem)}
                         >
-                          Register Now →
-                        </a>
+                          {classItem.options?.length > 1 ? (classItem.bookingCta || 'Choose Your Option →') : 'Register Now →'}
+                        </button>
                       )}
                       {classItem.image && (
                         <button
@@ -1022,15 +639,14 @@ function App() {
               gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
               gap: '1.5rem'
             }}>
-              {upcomingClasses.filter(c => !c.featured).map((classItem, i) => (
-                <a
+              {classes.filter(c => !c.featured).map((classItem, i) => (
+                <button
                   key={i}
-                  href={classItem.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="no-underline"
+                  type="button"
+                  onClick={() => setClassOptionsModal(classItem)}
+                  className="no-underline bn bg-transparent pa0 tl w-100"
                   aria-label={`Learn more about ${classItem.title} – ${classItem.schedule}`}
-                  style={{ textDecoration: 'none' }}
+                  style={{ textDecoration: 'none', cursor: 'pointer' }}
                 >
                   <article 
                     className="bg-white br4 overflow-hidden transition-all"
@@ -1076,7 +692,7 @@ function App() {
                       </div>
                     </div>
                   </article>
-                </a>
+                </button>
               ))}
             </div>
           </div>
@@ -1091,12 +707,13 @@ function App() {
                 <div className="fw6 black mb2 f5">Ladies Night – Pennington Gap</div>
                 <time className="black-60 db" dateTime="2025-01-02T18:00">Every Thursday, 6:00 – 8:00 PM</time>
                 <a 
-                  href="#ladies-night-options"
+                  href="#classes"
                   className="f7 black no-underline mt2 dib hover-underline"
                   aria-label="Register for Ladies Night painting class – every Thursday 6 to 8 PM"
                   onClick={(event) => {
                     event.preventDefault();
-                    setLadiesNightModalOpen(true);
+                    const ladiesNight = classes.find((c) => c.title === 'Ladies Night');
+                    if (ladiesNight) setClassOptionsModal(ladiesNight);
                   }}
                 >
                   Register here →
@@ -1492,103 +1109,6 @@ function App() {
         </div>
       )}
 
-      {ladiesNightModalOpen && (
-        <div
-          className="fixed top-0 left-0 w-100 h-100 flex items-center justify-center pa3 pa4-l"
-          style={{
-            background: 'rgba(0,0,0,0.72)',
-            zIndex: 1200
-          }}
-          role="presentation"
-          onClick={() => setLadiesNightModalOpen(false)}
-        >
-          <section
-            id="ladies-night-options"
-            className="bg-white black br3 w-100 overflow-hidden"
-            style={{
-              maxWidth: '960px',
-              maxHeight: '88vh',
-              boxShadow: '0 30px 80px rgba(0,0,0,0.35)'
-            }}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="ladies-night-title"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <div className="flex justify-between items-start pa4 pa5-l pb3">
-              <div>
-                <h2 id="ladies-night-title" className="f3 f2-l fw7 ma0 mb2 black" style={{ letterSpacing: '-0.02em' }}>
-                  Ladies Night Paintings
-                </h2>
-                <p className="f6 f5-l lh-copy black-60 ma0">
-                  Choose your painting for Thursday night.
-                </p>
-              </div>
-              <button
-                type="button"
-                className="bg-transparent bn pointer black f2 lh-solid pa2"
-                aria-label="Close Ladies Night painting choices"
-                onClick={() => setLadiesNightModalOpen(false)}
-              >
-                ×
-              </button>
-            </div>
-
-            <div
-              className="pa4 pa5-l pt2 overflow-y-auto"
-              style={{
-                maxHeight: 'calc(88vh - 130px)'
-              }}
-            >
-              <div
-                className="grid"
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 180px), 1fr))',
-                  gap: '1rem'
-                }}
-              >
-                {ladiesNightPaintings.map((painting) => (
-                  <article
-                    key={painting.title}
-                    className="bg-white br3 overflow-hidden"
-                    style={{
-                      border: '1px solid rgba(0,0,0,0.1)',
-                      boxShadow: '0 4px 12px rgba(0,0,0,0.08)'
-                    }}
-                  >
-                    <img
-                      src={painting.image}
-                      alt={painting.alt || `${painting.title} placeholder`}
-                      className="db w-100"
-                      style={{
-                        aspectRatio: '4 / 3',
-                        objectFit: 'cover'
-                      }}
-                    />
-                    <div className="pa3">
-                      <div className="flex justify-between items-start mb3" style={{ gap: '0.75rem' }}>
-                        <h3 className="f6 fw6 black ma0">{painting.title}</h3>
-                        <div className="f6 fw7 black">{painting.price}</div>
-                      </div>
-                      <a
-                        href={painting.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="dib w-100 bg-black white pv2 ph3 br-pill no-underline fw6 tc f7"
-                        aria-label={`Book ${painting.title}`}
-                      >
-                        Book Now
-                      </a>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </div>
-          </section>
-        </div>
-      )}
-
       {classOptionsModal && (
         <div
           className="fixed top-0 left-0 w-100 h-100 flex items-center justify-center pa3 pa4-l"
@@ -1600,7 +1120,7 @@ function App() {
           onClick={() => setClassOptionsModal(null)}
         >
           <section
-            id={classOptionsModal.link?.startsWith('#') ? classOptionsModal.link.slice(1) : 'class-options'}
+            id="class-options"
             className="bg-white black br3 w-100 overflow-hidden"
             style={{
               maxWidth: '720px',
@@ -1645,7 +1165,7 @@ function App() {
                   gap: '1rem'
                 }}
               >
-                {classOptionsModal.bookingOptions.map((option) => (
+                {classOptionsModal.options.map((option) => (
                   <article
                     key={option.title}
                     className="bg-white br3 overflow-hidden"
@@ -1678,15 +1198,31 @@ function App() {
                         </div>
                         <div className="f6 fw7 black">{option.price}</div>
                       </div>
-                      <a
-                        href={option.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="dib w-100 bg-black white pv2 ph3 br-pill no-underline fw6 tc f7"
+                      <div className="flex items-center mb3" style={{ gap: '0.5rem' }}>
+                        <label className="f7 black-60" htmlFor={`qty-${option.id}`}>Qty</label>
+                        <input
+                          id={`qty-${option.id}`}
+                          type="number"
+                          min="1"
+                          max="20"
+                          value={optionQuantities[option.id] ?? 1}
+                          onChange={(e) => {
+                            const value = Math.min(Math.max(parseInt(e.target.value, 10) || 1, 1), 20);
+                            setOptionQuantities((q) => ({ ...q, [option.id]: value }));
+                          }}
+                          className="pa1 br2"
+                          style={{ width: '3.5rem', border: '1px solid rgba(0,0,0,0.2)' }}
+                          aria-label={`Number of people for ${option.title}`}
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => startCheckout(option.id, optionQuantities[option.id] ?? 1)}
+                        className="dib w-100 bg-black white pv2 ph3 br-pill bn pointer fw6 tc f7"
                         aria-label={`Book ${option.title}`}
                       >
                         Book Now
-                      </a>
+                      </button>
                     </div>
                   </article>
                 ))}

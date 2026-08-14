@@ -1,0 +1,26 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "paintinginsidethelinesstudio",
+  "compatibility_date": "2026-08-14",
+  "main": "worker/index.js",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "pits-db",
+      "database_id": "e1f4e94f-b58e-47d9-8fd6-5ecbf89a552c"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "IMAGES",
+      "bucket_name": "pits-images"
+    }
+  ],
+  "vars": {
+    "SITE_URL": "https://paintingoutsidethelinesstudios.com"
+  }
+}
