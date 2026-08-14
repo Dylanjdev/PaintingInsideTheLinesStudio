@@ -298,6 +298,7 @@ function App() {
           {/* Desktop Navigation */}
           <ul className="dn flex-l gap3 list pa0 ma0" role="list">
             <li><a href="#classes" className="black-70 no-underline hover-black transition-all">Classes</a></li>
+            <li><a href="/journal/" className="black-70 no-underline hover-black transition-all">Journal</a></li>
             <li><a href="#contact" className="black-70 no-underline hover-black transition-all">Contact</a></li>
           </ul>
           
@@ -351,6 +352,15 @@ function App() {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Classes & Events
+              </a>
+            </li>
+            <li>
+              <a
+                href="/journal/"
+                className="black-70 no-underline hover-black pv3 ph2 transition-all f5 db"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Journal
               </a>
             </li>
             <li>

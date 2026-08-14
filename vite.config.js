@@ -20,6 +20,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(root, 'index.html'),
+        journal: resolve(root, 'journal/index.html'),
         admin: resolve(root, 'admin.html')
       }
     }
