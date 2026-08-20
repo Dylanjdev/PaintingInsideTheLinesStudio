@@ -9,6 +9,7 @@ export default defineConfig({
   plugins: [react()],
   base: '/',
   build: {
+    manifest: true,
     minify: 'terser',
     terserOptions: {
       compress: {

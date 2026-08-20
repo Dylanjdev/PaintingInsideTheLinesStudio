@@ -1,5 +1,4 @@
 import React from 'react';
-import Inside from './assets/Inside.webp';
 
 const sections = [
   {
@@ -78,12 +77,22 @@ function Article() {
           <h1 className="f2 f1-l fw7 black mb3" style={{ fontSize: 'clamp(2.5rem, 8vw, 6rem)', lineHeight: '1', letterSpacing: '-0.04em' }}>The Beauty of Art</h1>
           <p className="f4 f3-l black-60 measure lh-copy mb4">A quiet reflection on attention, imperfection, community, and the ways creativity helps us see a familiar world as new.</p>
           <div className="flex flex-wrap gap2 f7 black-60 tracked" style={{ letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-            <span>Painting Outside The Lines Studio</span><span aria-hidden="true">/</span><span>8 min read</span>
+            <span>Painting Outside The Lines Studio</span><span aria-hidden="true">/</span><time dateTime="2026-08-14">August 14, 2026</time><span aria-hidden="true">/</span><span>8 min read</span>
           </div>
         </div>
 
         <div className="center ph3 ph4-l" style={{ maxWidth: '60rem' }}>
-          <img src={Inside} alt="The warm interior of Painting Outside The Lines Studio" className="w-100 db object-cover" style={{ maxHeight: '34rem' }} />
+          <img
+            src="/PaintingInsideTheStudio.webp"
+            alt="The warm interior of Painting Outside The Lines Studio"
+            width="412"
+            height="412"
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+            className="w-100 db object-cover"
+            style={{ maxHeight: '34rem' }}
+          />
         </div>
 
         <article className="pv5 pv6-l ph3 ph4-l center" style={{ maxWidth: '44rem' }}>

@@ -1,11 +1,18 @@
 import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import { createRoot, hydrateRoot } from 'react-dom/client'
 import './index.css'
 import './tachyons-used.css'
 import Article from './Article.jsx'
 
-createRoot(document.getElementById('root')).render(
+const root = document.getElementById('root')
+const article = (
   <StrictMode>
     <Article />
-  </StrictMode>,
+  </StrictMode>
 )
+
+if (root.hasChildNodes()) {
+  hydrateRoot(root, article)
+} else {
+  createRoot(root).render(article)
+}

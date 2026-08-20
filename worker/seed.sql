@@ -25,7 +25,7 @@ VALUES (2, 'Fence', 3500, 'fence.webp', 'Fence Ladies Night painting', 8);
 INSERT INTO class_options (class_id, title, price_cents, image_key, alt, sort_order)
 VALUES (2, 'Spring Bird', 3500, 'springbird.webp', 'Spring Bird Ladies Night painting', 9);
 INSERT INTO classes (id, title, description, schedule, location_name, location_street, location_city, location_region, location_postal, gradient, dark_text, featured, image_key, image_alt, booking_cta, sort_order)
-VALUES (3, 'Crushed Glass', 'Choose between a 6 inch sunflower, 12 inch cat, 12 inch flowers, or 18 inch hummingbird in this guided crushed glass workshop.', 'Jul 25, 2026 04:00pm - 07:00pm', NULL, NULL, NULL, NULL, NULL, 'linear-gradient(135deg, #7f7fd5 0%, #86a8e7 50%, #91eae4 100%)', 0, 1, NULL, NULL, 'Choose Your Project →', 2);
+VALUES (3, 'Crushed Glass', 'Choose between a 6 inch sunflower, 12 inch cat, 12 inch flowers, or 18 inch hummingbird in this guided crushed glass workshop.', 'Sept 5th, 2026 04:00pm - 07:00pm', NULL, NULL, NULL, NULL, NULL, 'linear-gradient(135deg, #7f7fd5 0%, #86a8e7 50%, #91eae4 100%)', 0, 1, NULL, NULL, 'Choose Your Project →', 2);
 INSERT INTO class_options (class_id, title, price_cents, image_key, alt, sort_order)
 VALUES (3, '6 inch Sunflower', 3500, 'sunflower.webp', '6 inch sunflower crushed glass class project', 0);
 INSERT INTO class_options (class_id, title, price_cents, image_key, alt, sort_order)
@@ -35,7 +35,7 @@ VALUES (3, '12 inch Flowers', 6500, 'crushedglassflowers.webp', '12 inch flowers
 INSERT INTO class_options (class_id, title, price_cents, image_key, alt, sort_order)
 VALUES (3, '18 inch Hummingbird', 6500, 'crushedglasshummingbird.webp', '18 inch hummingbird crushed glass class project', 3);
 INSERT INTO classes (id, title, description, schedule, location_name, location_street, location_city, location_region, location_postal, gradient, dark_text, featured, image_key, image_alt, booking_cta, sort_order)
-VALUES (4, 'Crushed Glass Christmas Tree', 'Create a festive crushed glass Christmas tree with sparkle, texture, and guided studio instruction.', 'Jul 11, 2026 04:00pm - 07:00pm', NULL, NULL, NULL, NULL, NULL, 'linear-gradient(135deg, #0f766e 0%, #16a34a 50%, #dc2626 100%)', 0, 1, 'crushedglasschristmas.webp', 'Crushed Glass Christmas Tree class project', NULL, 3);
+VALUES (4, 'Crushed Glass Christmas Tree', 'Create a festive crushed glass Christmas tree with sparkle, texture, and guided studio instruction.', 'Sept 26th 4pm-7pm', NULL, NULL, NULL, NULL, NULL, 'linear-gradient(135deg, #0f766e 0%, #16a34a 50%, #dc2626 100%)', 0, 1, 'crushedglasschristmas.webp', 'Crushed Glass Christmas Tree class project', NULL, 3);
 INSERT INTO class_options (class_id, title, price_cents, image_key, alt, sort_order)
 VALUES (4, 'Crushed Glass Christmas Tree', 6500, NULL, NULL, 0);
 INSERT INTO classes (id, title, description, schedule, location_name, location_street, location_city, location_region, location_postal, gradient, dark_text, featured, image_key, image_alt, booking_cta, sort_order)
@@ -84,3 +84,8 @@ INSERT INTO classes (id, title, description, schedule, location_name, location_s
 VALUES (13, 'Highlander Cow Paint Party', 'Paint a Highlander cow set against a patriotic American flag-inspired background, finished with bright floral details.', '2:30 PM - 4:30 PM', NULL, NULL, NULL, NULL, NULL, 'linear-gradient(135deg, #991b1b 0%, #ffffff 48%, #1e3a8a 100%)', 1, 1, 'highlander.webp', 'Highlander cow painting with an American flag background and flowers', NULL, 12);
 INSERT INTO class_options (class_id, title, price_cents, image_key, alt, sort_order)
 VALUES (13, 'Highlander Cow Paint Party', 5500, NULL, NULL, 0);
+
+UPDATE classes SET start_at = '2026-09-05T16:00', end_at = '2026-09-05T19:00' WHERE id = 3;
+UPDATE classes SET start_at = '2026-09-26T16:00', end_at = '2026-09-26T19:00' WHERE id = 4;
+UPDATE classes SET start_at = '2026-08-29T16:00', end_at = '2026-08-29T19:00' WHERE id = 5;
+UPDATE classes SET updated_at = created_at WHERE updated_at IS NULL;

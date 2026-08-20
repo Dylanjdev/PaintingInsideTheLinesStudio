@@ -1,7 +1,16 @@
 import { createSessionCookie, clearSessionCookie, isAuthenticated } from './auth.js';
 import { createCheckoutSession, verifyWebhookSignature } from './stripe.js';
+import { centsToDollarInput, dollarsToCents, formatPrice } from './pricing.js';
+import {
+  canonicalRedirect,
+  eventPath,
+  normalizeDateTimeLocal,
+  renderEventPage,
+  renderSitemap,
+  slugify
+} from './seo.js';
 
-const JSON_HEADERS = { 'Content-Type': 'application/json' };
+const JSON_HEADERS = { 'Content-Type': 'application/json; charset=utf-8' };
 
 function json(data, init = {}) {
   return new Response(JSON.stringify(data), { headers: JSON_HEADERS, ...init });
@@ -9,10 +18,6 @@ function json(data, init = {}) {
 
 function imageUrl(key) {
   return key ? `/images/${key}` : null;
-}
-
-function formatPrice(cents) {
-  return `$${(cents / 100).toFixed(cents % 100 === 0 ? 0 : 2)}`;
 }
 
 async function requireAuth(request, env) {
@@ -51,6 +56,9 @@ async function handleGetClasses(env) {
     title: c.title,
     description: c.description,
     schedule: c.schedule,
+    startAt: c.start_at,
+    endAt: c.end_at,
+    detailsUrl: eventPath(c),
     gradient: c.gradient,
     darkText: !!c.dark_text,
     featured: !!c.featured,
@@ -142,7 +150,7 @@ async function handleAdminGetClasses(env) {
     list.push({
       id: opt.id,
       title: opt.title,
-      priceCents: opt.price_cents,
+      priceDollars: centsToDollarInput(opt.price_cents),
       image: imageUrl(opt.image_key),
       imageKey: opt.image_key,
       alt: opt.alt,
@@ -156,6 +164,8 @@ async function handleAdminGetClasses(env) {
     title: c.title,
     description: c.description,
     schedule: c.schedule,
+    startAt: c.start_at,
+    endAt: c.end_at,
     gradient: c.gradient,
     darkText: !!c.dark_text,
     featured: !!c.featured,
@@ -177,6 +187,34 @@ async function handleAdminGetClasses(env) {
   return json(classes);
 }
 
+function normalizeOptions(options) {
+  if (!Array.isArray(options) || options.length === 0) return null;
+
+  const normalized = options.map((opt) => {
+    const title = typeof opt?.title === 'string' ? opt.title.trim() : '';
+    const priceCents = dollarsToCents(opt?.priceDollars);
+    if (!title || priceCents === null) return null;
+
+    return {
+      title,
+      priceCents,
+      imageKey: opt.imageKey || null,
+      alt: opt.alt || null
+    };
+  });
+
+  return normalized.some((opt) => opt === null) ? null : normalized;
+}
+
+function normalizeClassDates(body) {
+  const startAt = normalizeDateTimeLocal(body.startAt);
+  const endAt = normalizeDateTimeLocal(body.endAt);
+  if (startAt === undefined || endAt === undefined) return null;
+  if (endAt && !startAt) return null;
+  if (startAt && endAt && endAt <= startAt) return null;
+  return { startAt, endAt };
+}
+
 async function upsertOptions(env, classId, options, replace) {
   if (replace) {
     await env.DB.prepare('DELETE FROM class_options WHERE class_id = ?').bind(classId).run();
@@ -185,25 +223,30 @@ async function upsertOptions(env, classId, options, replace) {
     const opt = options[i];
     await env.DB.prepare(
       'INSERT INTO class_options (class_id, title, price_cents, image_key, alt, sort_order) VALUES (?, ?, ?, ?, ?, ?)'
-    ).bind(classId, opt.title, Math.round(opt.priceCents), opt.imageKey || null, opt.alt || null, i).run();
+    ).bind(classId, opt.title, opt.priceCents, opt.imageKey, opt.alt, i).run();
   }
 }
 
 async function handleAdminCreateClass(request, env) {
   const body = await request.json().catch(() => null);
-  if (!body || !body.title || !Array.isArray(body.options) || body.options.length === 0) {
-    return json({ error: 'title and at least one option are required' }, { status: 400 });
+  const options = normalizeOptions(body?.options);
+  const dates = body ? normalizeClassDates(body) : null;
+  if (!body || !body.title?.trim() || !options || !dates) {
+    return json({ error: 'A title, valid event dates, and at least one option with a valid dollar price are required' }, { status: 400 });
   }
 
   const result = await env.DB.prepare(
     `INSERT INTO classes
-      (title, description, schedule, location_name, location_street, location_city, location_region, location_postal,
-       gradient, dark_text, featured, image_key, image_alt, booking_cta, booked, booked_message, sort_order)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      (title, description, schedule, start_at, end_at, location_name, location_street, location_city, location_region,
+       location_postal, gradient, dark_text, featured, image_key, image_alt, booking_cta, booked, booked_message,
+       sort_order, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))`
   ).bind(
-    body.title,
+    body.title.trim(),
     body.description || null,
     body.schedule || null,
+    dates.startAt,
+    dates.endAt,
     body.locationName || null,
     body.locationStreet || null,
     body.locationCity || null,
@@ -221,7 +264,7 @@ async function handleAdminCreateClass(request, env) {
   ).run();
 
   const classId = result.meta.last_row_id;
-  await upsertOptions(env, classId, body.options, false);
+  await upsertOptions(env, classId, options, false);
 
   return json({ id: classId }, { status: 201 });
 }
@@ -230,19 +273,28 @@ async function handleAdminUpdateClass(request, env, id) {
   const body = await request.json().catch(() => null);
   if (!body) return json({ error: 'Invalid body' }, { status: 400 });
 
+  const options = normalizeOptions(body.options);
+  const dates = normalizeClassDates(body);
+  if (!body.title?.trim() || !options || !dates) {
+    return json({ error: 'A title, valid event dates, and at least one option with a valid dollar price are required' }, { status: 400 });
+  }
+
   const existing = await env.DB.prepare('SELECT id FROM classes WHERE id = ?').bind(id).first();
   if (!existing) return json({ error: 'Class not found' }, { status: 404 });
 
   await env.DB.prepare(
     `UPDATE classes SET
-      title = ?, description = ?, schedule = ?, location_name = ?, location_street = ?,
+      title = ?, description = ?, schedule = ?, start_at = ?, end_at = ?, location_name = ?, location_street = ?,
       location_city = ?, location_region = ?, location_postal = ?, gradient = ?, dark_text = ?,
-      featured = ?, image_key = ?, image_alt = ?, booking_cta = ?, booked = ?, booked_message = ?, sort_order = ?
+      featured = ?, image_key = ?, image_alt = ?, booking_cta = ?, booked = ?, booked_message = ?, sort_order = ?,
+      updated_at = datetime('now')
      WHERE id = ?`
   ).bind(
-    body.title,
+    body.title.trim(),
     body.description || null,
     body.schedule || null,
+    dates.startAt,
+    dates.endAt,
     body.locationName || null,
     body.locationStreet || null,
     body.locationCity || null,
@@ -260,9 +312,7 @@ async function handleAdminUpdateClass(request, env, id) {
     id
   ).run();
 
-  if (Array.isArray(body.options) && body.options.length > 0) {
-    await upsertOptions(env, id, body.options, true);
-  }
+  await upsertOptions(env, id, options, true);
 
   return json({ ok: true });
 }
@@ -362,12 +412,67 @@ async function handleAdminGetOrders(env) {
   return json(orders);
 }
 
+async function handleEventPage(request, env, id, requestedSlug) {
+  const classItem = await env.DB.prepare('SELECT * FROM classes WHERE id = ?').bind(id).first();
+  if (!classItem) {
+    return new Response('Class or event not found', {
+      status: 404,
+      headers: { 'Content-Type': 'text/plain; charset=utf-8', 'X-Robots-Tag': 'noindex' }
+    });
+  }
+
+  const canonicalPath = eventPath(classItem);
+  if (requestedSlug !== slugify(classItem.title) || new URL(request.url).pathname !== canonicalPath) {
+    const siteOrigin = new URL(env.SITE_URL || request.url).origin;
+    return Response.redirect(`${siteOrigin}${canonicalPath}`, 301);
+  }
+
+  const { results: options } = await env.DB.prepare(
+    'SELECT * FROM class_options WHERE class_id = ? ORDER BY sort_order ASC, id ASC'
+  ).bind(id).all();
+  const html = renderEventPage(classItem, options, env.SITE_URL || new URL(request.url).origin);
+
+  return new Response(request.method === 'HEAD' ? null : html, {
+    headers: {
+      'Content-Type': 'text/html; charset=utf-8',
+      'Cache-Control': 'public, max-age=300, s-maxage=300'
+    }
+  });
+}
+
+async function handleSitemap(request, env) {
+  const { results } = await env.DB.prepare(
+    'SELECT id, title, created_at, updated_at FROM classes ORDER BY sort_order ASC, id ASC'
+  ).all();
+  const sitemap = renderSitemap(results, env.SITE_URL || new URL(request.url).origin);
+  return new Response(request.method === 'HEAD' ? null : sitemap, {
+    headers: {
+      'Content-Type': 'application/xml; charset=utf-8',
+      'Cache-Control': 'public, max-age=300, s-maxage=300'
+    }
+  });
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     const { pathname } = url;
 
+    const redirect = env.SITE_URL && request.cf?.colo
+      ? canonicalRedirect(request.url, env.SITE_URL, request.headers.get('host'))
+      : null;
+    if (redirect) return Response.redirect(redirect, 301);
+
     try {
+      if (pathname === '/sitemap.xml' && (request.method === 'GET' || request.method === 'HEAD')) {
+        return await handleSitemap(request, env);
+      }
+
+      const eventMatch = pathname.match(/^\/events\/(\d+)\/([a-z0-9-]+)\/?$/);
+      if (eventMatch && (request.method === 'GET' || request.method === 'HEAD')) {
+        return await handleEventPage(request, env, Number(eventMatch[1]), eventMatch[2]);
+      }
+
       if (pathname === '/api/classes' && request.method === 'GET') {
         return await handleGetClasses(env);
       }

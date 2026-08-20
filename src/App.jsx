@@ -122,151 +122,6 @@ function App() {
     }
   ];
 
-
-  const studioAddress = {
-    '@type': 'PostalAddress',
-    streetAddress: '140 Main Street',
-    addressLocality: 'Pennington Gap',
-    addressRegion: 'VA',
-    postalCode: '24277',
-    addressCountry: 'US'
-  };
-
-  const parseDateCandidate = (value) => {
-    if (!value) return null;
-    const normalized = value
-      .replace(/\s+/g, ' ')
-      .replace(/(\d)(am|pm)\b/gi, '$1 $2')
-      .replace(/\b(am|pm)\b/gi, (m) => m.toUpperCase())
-      .trim();
-    const parsed = new Date(normalized);
-    return Number.isNaN(parsed.getTime()) ? null : parsed;
-  };
-
-  const toIsoString = (date) => {
-    if (!date) return undefined;
-    const pad = (n) => String(n).padStart(2, '0');
-    const y = date.getFullYear();
-    const m = pad(date.getMonth() + 1);
-    const d = pad(date.getDate());
-    const h = pad(date.getHours());
-    const min = pad(date.getMinutes());
-    return `${y}-${m}-${d}T${h}:${min}:00-04:00`;
-  };
-
-  const parseScheduleDates = (schedule) => {
-    if (!schedule) return {};
-    const parts = schedule.split(' - ').map((part) => part.trim());
-    if (!parts.length) return {};
-
-    const start = parseDateCandidate(parts[0]);
-    if (!start) return {};
-
-    let end = null;
-    if (parts[1]) {
-      const directEnd = parseDateCandidate(parts[1]);
-      if (directEnd) {
-        end = directEnd;
-      } else {
-        const datePrefix = parts[0].replace(/\s+\d{1,2}:\d{2}\s*[AaPp][Mm]\s*$/, '').trim();
-        end = parseDateCandidate(`${datePrefix} ${parts[1]}`);
-      }
-    }
-
-    return {
-      startDate: toIsoString(start),
-      endDate: toIsoString(end)
-    };
-  };
-
-  const classesItemListSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'ItemList',
-    name: 'Upcoming Classes and Events',
-    itemListElement: classes.map((classItem, index) => ({
-      '@type': 'ListItem',
-      position: index + 1,
-      url: 'https://paintingoutsidethelinesstudios.com/#classes',
-      item: {
-        '@type': 'Course',
-        name: classItem.title,
-        description: classItem.description,
-        provider: {
-          '@type': 'LocalBusiness',
-          name: 'Painting Outside The Lines Studio'
-        }
-      }
-    }))
-  };
-
-  const classEventsSchema = {
-    '@context': 'https://schema.org',
-    '@graph': [
-      {
-        '@type': 'EventSeries',
-        name: 'Ladies Night',
-        description: 'An evening of art, laughter, and connection. Every Thursday at our Pennington Gap studio.',
-        eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-        eventStatus: 'https://schema.org/EventScheduled',
-        location: {
-          '@type': 'Place',
-          name: 'Painting Outside The Lines Studio',
-          address: studioAddress
-        },
-        eventSchedule: {
-          '@type': 'Schedule',
-          byDay: ['https://schema.org/Thursday'],
-          startTime: '18:00',
-          endTime: '20:00',
-          scheduleTimezone: 'America/New_York'
-        },
-        offers: {
-          '@type': 'Offer',
-          url: 'https://paintingoutsidethelinesstudios.com/#classes',
-          availability: 'https://schema.org/InStock'
-        },
-        organizer: {
-          '@type': 'Organization',
-          name: 'Painting Outside The Lines Studio',
-          url: 'https://paintingoutsidethelinesstudios.com/'
-        }
-      },
-      ...classes
-        .map((classItem) => {
-          const parsed = parseScheduleDates(classItem.schedule);
-          if (!parsed.startDate || classItem.title === 'Ladies Night') {
-            return null;
-          }
-
-          return {
-            '@type': 'Event',
-            name: classItem.title,
-            description: classItem.description,
-            startDate: parsed.startDate,
-            ...(parsed.endDate ? { endDate: parsed.endDate } : {}),
-            eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-            eventStatus: 'https://schema.org/EventScheduled',
-            location: {
-              '@type': 'Place',
-              name: classItem.location?.name || 'Painting Outside The Lines Studio',
-              address: classItem.location?.address || studioAddress
-            },
-            offers: {
-              '@type': 'Offer',
-              url: 'https://paintingoutsidethelinesstudios.com/#classes',
-              availability: classItem.booked ? 'https://schema.org/SoldOut' : 'https://schema.org/InStock'
-            },
-            organizer: {
-              '@type': 'Organization',
-              name: 'Painting Outside The Lines Studio',
-              url: 'https://paintingoutsidethelinesstudios.com/'
-            }
-          };
-        })
-        .filter(Boolean)
-    ]
-  };
-
   const parties = [
     'Date Night', 'Girls Night', 'Kids Painting', 'Birthday Celebrations', 
     'Holiday Events', 'Corporate Gatherings', 'Team Building', 'Praise & Paint',
@@ -275,15 +130,6 @@ function App() {
 
   return (
     <div className="bg-white" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif' }}>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(classesItemListSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(classEventsSchema) }}
-      />
-      
       {/* ─── Navigation (role="navigation" is implicit on <nav>) ─── */}
       <nav className="fixed top-0 left-0 right-0 z-999 transition-all bg-white-90 backdrop-blur" aria-label="Main navigation" style={{ 
         backdropFilter: 'saturate(180%) blur(20px)',
@@ -385,8 +231,8 @@ function App() {
             src="/PaintingInsideTheStudio.webp" 
             alt="Inside Painting Outside The Lines Studio – a warm, inviting painting studio at 140 Main Street, Pennington Gap, Virginia" 
             className="w-100 h-100 object-cover db"
-            width="800"
-            height="600"
+            width="412"
+            height="412"
             loading="eager"
             fetchPriority="high"
             style={{ 
@@ -487,9 +333,10 @@ function App() {
             src={HandPainting} 
             alt="A student's hand painting on canvas during a guided art class at Painting Outside The Lines Studio" 
             className="w-100 h-100 object-cover db"
-            width="700"
-            height="700"
+            width="412"
+            height="546"
             loading="lazy"
+            decoding="async"
           />
         </div>
         <div className="w-100 w-50-l flex items-center justify-center pa4 pa5-l bg-white order-0 order-1-l">
@@ -586,7 +433,7 @@ function App() {
                   </div>
                   <div>
                     <div className={`f6 mb3 ${classItem.darkText ? 'black-70' : 'white-80'}`}>
-                      <time dateTime={classItem.schedule === 'Every Thursday • 6:00 – 8:00 PM' ? 'RRRR' : undefined}>
+                      <time dateTime={classItem.startAt || undefined}>
                         {classItem.schedule}
                       </time>
                     </div>
@@ -634,6 +481,12 @@ function App() {
                           View Project
                         </button>
                       )}
+                      <a
+                        href={classItem.detailsUrl}
+                        className={`dib ph3 pv2 fw6 f7 ${classItem.darkText ? 'black' : 'white'}`}
+                      >
+                        Class details →
+                      </a>
                     </div>
                   </div>
                 </article>
@@ -650,59 +503,51 @@ function App() {
               gap: '1.5rem'
             }}>
               {classes.filter(c => !c.featured).map((classItem, i) => (
-                <button
+                <article
                   key={i}
-                  type="button"
-                  onClick={() => setClassOptionsModal(classItem)}
-                  className="no-underline bn bg-transparent pa0 tl w-100"
-                  aria-label={`Learn more about ${classItem.title} – ${classItem.schedule}`}
-                  style={{ textDecoration: 'none', cursor: 'pointer' }}
+                  className="bg-white br4 overflow-hidden transition-all"
+                  style={{
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+                    transition: 'all 0.3s ease',
+                    border: '1px solid rgba(0,0,0,0.06)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-8px)';
+                    e.currentTarget.style.boxShadow = '0 20px 40px rgba(0,0,0,0.15)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.08)';
+                  }}
                 >
-                  <article 
-                    className="bg-white br4 overflow-hidden transition-all"
-                    style={{
-                      boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
-                      transition: 'all 0.3s ease',
-                      border: '1px solid rgba(0,0,0,0.06)'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = 'translateY(-8px)';
-                      e.currentTarget.style.boxShadow = '0 20px 40px rgba(0,0,0,0.15)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = 'translateY(0)';
-                      e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.08)';
-                    }}
-                  >
-                    <div 
-                      className="pa1"
-                      style={{
-                        background: classItem.gradient,
-                        height: '8px'
-                      }}
-                      aria-hidden="true"
-                    ></div>
-                    <div className="pa4">
-                      <h3 className="f4 fw6 mb2 black" style={{ letterSpacing: '-0.01em' }}>
+                  <div
+                    className="pa1"
+                    style={{ background: classItem.gradient, height: '8px' }}
+                    aria-hidden="true"
+                  ></div>
+                  <div className="pa4">
+                    <h3 className="f4 fw6 mb2 black" style={{ letterSpacing: '-0.01em' }}>
+                      <a href={classItem.detailsUrl} className="black no-underline hover-underline">
                         {classItem.title}
-                      </h3>
-                      <p className="f6 lh-copy black-60 mb3">
-                        {classItem.description}
-                      </p>
-                      <p className="f7 black-60 mb3">
-                        {classItem.schedule}
-                      </p>
-                      <div 
-                        className="dib ph3 pv2 br-pill fw6 f7 black transition-all"
-                        style={{
-                          border: '2px solid black'
-                        }}
+                      </a>
+                    </h3>
+                    <p className="f6 lh-copy black-60 mb3">{classItem.description}</p>
+                    <p className="f7 black-60 mb3">
+                      <time dateTime={classItem.startAt || undefined}>{classItem.schedule}</time>
+                    </p>
+                    <div className="flex flex-wrap items-center" style={{ gap: '0.75rem' }}>
+                      <button
+                        type="button"
+                        className="bg-transparent pointer ph3 pv2 br-pill fw6 f7 black transition-all"
+                        style={{ border: '2px solid black' }}
+                        onClick={() => setClassOptionsModal(classItem)}
                       >
-                        View Details →
-                      </div>
+                        Register →
+                      </button>
+                      <a href={classItem.detailsUrl} className="f7 fw6 black">Full details</a>
                     </div>
-                  </article>
-                </button>
+                  </div>
+                </article>
               ))}
             </div>
           </div>
@@ -715,7 +560,7 @@ function App() {
             <div className="flex justify-center">
               <div className="bg-near-white pa4 br3" style={{ maxWidth: '400px', width: '100%' }}>
                 <div className="fw6 black mb2 f5">Ladies Night – Pennington Gap</div>
-                <time className="black-60 db" dateTime="2025-01-02T18:00">Every Thursday, 6:00 – 8:00 PM</time>
+                <time className="black-60 db">Every Thursday, 6:00 – 8:00 PM</time>
                 <a 
                   href="#classes"
                   className="f7 black no-underline mt2 dib hover-underline"
@@ -827,9 +672,10 @@ function App() {
             src={Outside} 
             alt="Exterior view of Painting Outside The Lines Studio on Main Street in Pennington Gap, Virginia" 
             className="w-100 object-cover db"
-            width="700"
-            height="700"
+            width="2016"
+            height="1512"
             loading="lazy"
+            decoding="async"
             style={{ height: '100%', minHeight: '40vh' }}
           />
         </div>
@@ -842,9 +688,10 @@ function App() {
             src={PaintImage} 
             alt="Colorful paint supplies and a canvas being created during a guided painting class at our Virginia studio" 
             className="w-100 h-100 object-cover db"
-            width="700"
-            height="700"
+            width="2016"
+            height="1512"
             loading="lazy"
+            decoding="async"
           />
         </div>
         <div className="w-100 w-50-l flex items-center justify-center pa4 pa5-l bg-near-white order-0 order-1-l">
@@ -941,9 +788,10 @@ function App() {
             src={Inside} 
             alt="Bright and welcoming interior of Painting Outside The Lines Studio with easels, canvases, and natural light in Pennington Gap VA" 
             className="w-100 object-cover db"
-            width="700"
-            height="700"
+            width="2016"
+            height="1512"
             loading="lazy"
+            decoding="async"
             style={{ height: '100%', minHeight: '40vh' }}
           />
         </div>
@@ -974,6 +822,51 @@ function App() {
             >
               Browse Classes
             </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Frequently Asked Questions ─── */}
+      <section className="pv5 pv6-l ph3 ph4-l bg-white" aria-labelledby="faq-title">
+        <div className="max-w-6 center">
+          <div className="tc mb4 mb5-l">
+            <p className="f7 fw6 tracked ttu black-50 mb2" style={{ letterSpacing: '0.12em' }}>Plan your visit</p>
+            <h2 id="faq-title" className="f2 f1-l fw6 black ma0" style={{ letterSpacing: '-0.02em' }}>Frequently Asked Questions</h2>
+          </div>
+          <div
+            className="grid"
+            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '1.5rem' }}
+          >
+            <article className="bg-near-white pa4 br3" itemScope itemType="https://schema.org/Question">
+              <h3 className="f5 fw6 mt0 mb2" itemProp="name">Do I need painting experience to attend a class?</h3>
+              <div itemScope itemType="https://schema.org/Answer" itemProp="acceptedAnswer">
+                <p className="f6 lh-copy black-60 ma0" itemProp="text">No experience is needed at all. Our expert instructors guide you step-by-step through the entire painting process at our Pennington Gap studio, so anyone can create a beautiful masterpiece.</p>
+              </div>
+            </article>
+            <article className="bg-near-white pa4 br3" itemScope itemType="https://schema.org/Question">
+              <h3 className="f5 fw6 mt0 mb2" itemProp="name">What is included in the class price?</h3>
+              <div itemScope itemType="https://schema.org/Answer" itemProp="acceptedAnswer">
+                <p className="f6 lh-copy black-60 ma0" itemProp="text">All beverages and painting supplies are included in your ticket price. Just bring yourself and your imagination!</p>
+              </div>
+            </article>
+            <article className="bg-near-white pa4 br3" itemScope itemType="https://schema.org/Question">
+              <h3 className="f5 fw6 mt0 mb2" itemProp="name">Where is Painting Outside The Lines Studio located?</h3>
+              <div itemScope itemType="https://schema.org/Answer" itemProp="acceptedAnswer">
+                <p className="f6 lh-copy black-60 ma0" itemProp="text">We are located at 140 Main Street, Pennington Gap, Virginia 24277, in the heart of Lee County.</p>
+              </div>
+            </article>
+            <article className="bg-near-white pa4 br3" itemScope itemType="https://schema.org/Question">
+              <h3 className="f5 fw6 mt0 mb2" itemProp="name">Can I book a private painting party?</h3>
+              <div itemScope itemType="https://schema.org/Answer" itemProp="acceptedAnswer">
+                <p className="f6 lh-copy black-60 ma0" itemProp="text">Yes! We offer private painting parties for birthdays, bridal showers, corporate team building, holiday events, and more. Email stac68camaro@gmail.com or call (276) 690-8848 to book.</p>
+              </div>
+            </article>
+            <article className="bg-near-white pa4 br3" itemScope itemType="https://schema.org/Question">
+              <h3 className="f5 fw6 mt0 mb2" itemProp="name">When are your regular painting classes held?</h3>
+              <div itemScope itemType="https://schema.org/Answer" itemProp="acceptedAnswer">
+                <p className="f6 lh-copy black-60 ma0" itemProp="text">Our Ladies Night class runs every Thursday from 6:00 PM to 8:00 PM. We also offer special seasonal classes and events throughout the year.</p>
+              </div>
+            </article>
           </div>
         </div>
       </section>
@@ -1042,41 +935,6 @@ function App() {
           </div>
         </div>
       </footer>
-
-      {/* ─── FAQ (visually hidden, crawled by Google for rich snippets) ─── */}
-      <div className="sr-only" aria-hidden="true">
-        <h2>Frequently Asked Questions</h2>
-        <div itemScope itemType="https://schema.org/Question">
-          <h3 itemProp="name">Do I need painting experience to attend a class?</h3>
-          <div itemScope itemType="https://schema.org/Answer" itemProp="acceptedAnswer">
-            <p itemProp="text">No experience is needed at all. Our expert instructors guide you step-by-step through the entire painting process at our Pennington Gap studio, so anyone can create a beautiful masterpiece.</p>
-          </div>
-        </div>
-        <div itemScope itemType="https://schema.org/Question">
-          <h3 itemProp="name">What is included in the class price?</h3>
-          <div itemScope itemType="https://schema.org/Answer" itemProp="acceptedAnswer">
-            <p itemProp="text">All beverages and painting supplies are included in your ticket price. Just bring yourself and your imagination!</p>
-          </div>
-        </div>
-        <div itemScope itemType="https://schema.org/Question">
-          <h3 itemProp="name">Where is Painting Outside The Lines Studio located?</h3>
-          <div itemScope itemType="https://schema.org/Answer" itemProp="acceptedAnswer">
-            <p itemProp="text">We are located at 140 Main Street, Pennington Gap, Virginia 24277, in the heart of Lee County.</p>
-          </div>
-        </div>
-        <div itemScope itemType="https://schema.org/Question">
-          <h3 itemProp="name">Can I book a private painting party?</h3>
-          <div itemScope itemType="https://schema.org/Answer" itemProp="acceptedAnswer">
-            <p itemProp="text">Yes! We offer private painting parties for birthdays, bridal showers, corporate team building, holiday events, and more. Contact us at stac68camaro@gmail.com or call +1 276-690-8848 to book your event.</p>
-          </div>
-        </div>
-        <div itemScope itemType="https://schema.org/Question">
-          <h3 itemProp="name">When are your regular painting classes held?</h3>
-          <div itemScope itemType="https://schema.org/Answer" itemProp="acceptedAnswer">
-            <p itemProp="text">Our Ladies Night class runs every Thursday from 6:00 PM to 8:00 PM at our Pennington Gap studio. We also offer special seasonal classes and events throughout the year.</p>
-          </div>
-        </div>
-      </div>
 
       {projectModal && (
         <div

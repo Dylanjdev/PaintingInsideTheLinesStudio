@@ -1,12 +1,19 @@
 import { useEffect, useState } from 'react';
 
-const emptyOption = () => ({ title: '', priceCents: '', imageKey: null, image: null, alt: '' });
+const emptyOption = () => ({ title: '', priceDollars: '', imageKey: null, image: null, alt: '' });
+
+const isValidDollarAmount = (value) => {
+  const normalized = String(value).trim();
+  return /^\d+(?:\.\d{1,2})?$/.test(normalized) && Number(normalized) > 0;
+};
 
 const emptyClass = () => ({
   id: null,
   title: '',
   description: '',
   schedule: '',
+  startAt: '',
+  endAt: '',
   gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
   darkText: false,
   featured: true,
@@ -112,12 +119,20 @@ function ClassForm({ initial, onSave, onCancel }) {
       .filter((o) => o.title.trim())
       .map((o) => ({
         title: o.title.trim(),
-        priceCents: Math.round(Number(o.priceCents) * 100),
+        priceDollars: String(o.priceDollars).trim(),
         imageKey: o.imageKey,
         alt: o.alt
       }));
-    if (options.length === 0 || options.some((o) => !Number.isFinite(o.priceCents) || o.priceCents <= 0)) {
-      setError('Every option needs a title and a price greater than $0.');
+    if (options.length === 0 || options.some((o) => !isValidDollarAmount(o.priceDollars))) {
+      setError('Every option needs a title and a dollar price greater than $0 with no more than two decimal places.');
+      return;
+    }
+    if (form.endAt && !form.startAt) {
+      setError('Choose an event start date before adding an end date.');
+      return;
+    }
+    if (form.startAt && form.endAt && form.endAt <= form.startAt) {
+      setError('The event end date must be after the start date.');
       return;
     }
 
@@ -127,6 +142,8 @@ function ClassForm({ initial, onSave, onCancel }) {
         title: form.title.trim(),
         description: form.description,
         schedule: form.schedule,
+        startAt: form.startAt,
+        endAt: form.endAt,
         gradient: form.gradient,
         darkText: form.darkText,
         featured: form.featured,
@@ -170,11 +187,25 @@ function ClassForm({ initial, onSave, onCancel }) {
         <textarea rows={3} value={form.description} onChange={(e) => update('description', e.target.value)} />
       </div>
 
+      <div className="field">
+        <label>Schedule shown to customers (e.g. "September 5, 4:00–7:00 PM")</label>
+        <input value={form.schedule || ''} onChange={(e) => update('schedule', e.target.value)} />
+      </div>
+
       <div className="row">
         <div className="field">
-          <label>Schedule (e.g. "Jun 16, 2026 06:00pm - 08:00pm")</label>
-          <input value={form.schedule} onChange={(e) => update('schedule', e.target.value)} />
+          <label>Event starts</label>
+          <input type="datetime-local" value={form.startAt || ''} onChange={(e) => update('startAt', e.target.value)} />
+          <div className="hint">Use this for one-time events so Google can show the correct date.</div>
         </div>
+        <div className="field">
+          <label>Event ends</label>
+          <input type="datetime-local" value={form.endAt || ''} min={form.startAt || undefined} onChange={(e) => update('endAt', e.target.value)} />
+          <div className="hint">Leave both event date fields empty for recurring or unscheduled classes.</div>
+        </div>
+      </div>
+
+      <div className="row">
         <div className="field">
           <label>Card background (CSS gradient or color)</label>
           <input value={form.gradient} onChange={(e) => update('gradient', e.target.value)} />
@@ -241,8 +272,17 @@ function ClassForm({ initial, onSave, onCancel }) {
             <input value={option.title} onChange={(e) => updateOption(i, 'title', e.target.value)} placeholder={form.title || 'e.g. Blue Truck'} />
           </div>
           <div className="field">
-            <label>Price (USD)</label>
-            <input type="number" min="0" step="0.01" value={option.priceCents} onChange={(e) => updateOption(i, 'priceCents', e.target.value)} placeholder="35" />
+            <label>Price in dollars (USD)</label>
+            <input
+              type="number"
+              min="0.01"
+              step="0.01"
+              inputMode="decimal"
+              value={option.priceDollars}
+              onChange={(e) => updateOption(i, 'priceDollars', e.target.value)}
+              placeholder="35.00"
+            />
+            <div className="hint">Enter 35 for $35, or 35.50 for $35.50.</div>
           </div>
           <ImagePicker
             label="Option image"

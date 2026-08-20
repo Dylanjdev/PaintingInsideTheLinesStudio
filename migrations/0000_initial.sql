@@ -1,11 +1,8 @@
--- Classes/events shown on the site
 CREATE TABLE IF NOT EXISTS classes (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   title TEXT NOT NULL,
   description TEXT,
   schedule TEXT,
-  start_at TEXT,
-  end_at TEXT,
   location_name TEXT,
   location_street TEXT,
   location_city TEXT,
@@ -20,12 +17,9 @@ CREATE TABLE IF NOT EXISTS classes (
   booked INTEGER NOT NULL DEFAULT 0,
   booked_message TEXT,
   sort_order INTEGER NOT NULL DEFAULT 0,
-  created_at TEXT NOT NULL DEFAULT (datetime('now')),
-  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
--- Each class has one or more purchasable options (e.g. a single price,
--- or a choice of designs each with its own price/image)
 CREATE TABLE IF NOT EXISTS class_options (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   class_id INTEGER NOT NULL REFERENCES classes(id) ON DELETE CASCADE,
@@ -38,7 +32,6 @@ CREATE TABLE IF NOT EXISTS class_options (
 
 CREATE INDEX IF NOT EXISTS idx_class_options_class_id ON class_options(class_id);
 
--- Completed Stripe purchases, recorded via the checkout.session.completed webhook
 CREATE TABLE IF NOT EXISTS orders (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   stripe_session_id TEXT NOT NULL UNIQUE,
